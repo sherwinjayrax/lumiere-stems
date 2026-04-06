@@ -256,11 +256,11 @@
   .right-2\.5 {
     right: calc(var(--spacing) * 2.5);
   }
-  .right-5 {
-    right: calc(var(--spacing) * 5);
-  }
   .right-12\.5 {
     right: calc(var(--spacing) * 12.5);
+  }
+  .bottom-0 {
+    bottom: calc(var(--spacing) * 0);
   }
   .bottom-6 {
     bottom: calc(var(--spacing) * 6);
@@ -277,6 +277,9 @@
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
+  .col-span-3 {
+    grid-column: span 3 / span 3;
+  }
   .row-span-3 {
     grid-row: span 3 / span 3;
   }
@@ -286,8 +289,8 @@
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
-  .mt-1 {
-    margin-top: calc(var(--spacing) * 1);
+  .mt-2 {
+    margin-top: calc(var(--spacing) * 2);
   }
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
@@ -333,6 +336,12 @@
   }
   .mb-16 {
     margin-bottom: calc(var(--spacing) * 16);
+  }
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
   .block {
     display: block;
@@ -393,6 +402,9 @@
   }
   .h-105 {
     height: calc(var(--spacing) * 105);
+  }
+  .h-\[60vh\] {
+    height: 60vh;
   }
   .h-auto {
     height: auto;
@@ -712,6 +724,9 @@
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
+  .p-5 {
+    padding: calc(var(--spacing) * 5);
+  }
   .p-6 {
     padding: calc(var(--spacing) * 6);
   }
@@ -890,6 +905,12 @@
   .text-white {
     color: var(--color-white);
   }
+  .text-white\/80 {
+    color: color-mix(in srgb, #fff 80%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-white) 80%, transparent);
+    }
+  }
   .uppercase {
     text-transform: uppercase;
   }
@@ -952,6 +973,10 @@
     --tw-duration: 300ms;
     transition-duration: 300ms;
   }
+  .duration-500 {
+    --tw-duration: 500ms;
+    transition-duration: 500ms;
+  }
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
@@ -970,9 +995,31 @@
       }
     }
   }
+  .group-hover\:bg-black\/45 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, #000 45%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-black) 45%, transparent);
+        }
+      }
+    }
+  }
   .last\:mb-0 {
     &:last-child {
       margin-bottom: calc(var(--spacing) * 0);
+    }
+  }
+  .last\:border-0 {
+    &:last-child {
+      border-style: var(--tw-border-style);
+      border-width: 0px;
+    }
+  }
+  .last\:border-r {
+    &:last-child {
+      border-right-style: var(--tw-border-style);
+      border-right-width: 1px;
     }
   }
   .hover\:bg-black-primary {
@@ -1192,6 +1239,16 @@
       height: calc(var(--spacing) * 180);
     }
   }
+  .md\:h-auto {
+    @media (width >= 48rem) {
+      height: auto;
+    }
+  }
+  .md\:h-screen {
+    @media (width >= 48rem) {
+      height: 100vh;
+    }
+  }
   .md\:min-h-125 {
     @media (width >= 48rem) {
       min-height: calc(var(--spacing) * 125);
@@ -1268,6 +1325,11 @@
   .md\:p-4 {
     @media (width >= 48rem) {
       padding: calc(var(--spacing) * 4);
+    }
+  }
+  .md\:p-7 {
+    @media (width >= 48rem) {
+      padding: calc(var(--spacing) * 7);
     }
   }
   .md\:p-10 {
@@ -1456,6 +1518,11 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+  .lg\:grid-cols-3 {
+    @media (width >= 64rem) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
   .lg\:grid-cols-4 {
     @media (width >= 64rem) {
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1522,6 +1589,11 @@
       border-color: var(--color-black-primary);
     }
   }
+  .lg\:p-10 {
+    @media (width >= 64rem) {
+      padding: calc(var(--spacing) * 10);
+    }
+  }
   .lg\:py-4 {
     @media (width >= 64rem) {
       padding-block: calc(var(--spacing) * 4);
@@ -1552,6 +1624,11 @@
     @media (width >= 64rem) {
       font-size: var(--text-lg);
       line-height: var(--tw-leading, var(--text-lg--line-height));
+    }
+  }
+  .lg\:text-\[2\.8rem\] {
+    @media (width >= 64rem) {
+      font-size: 2.8rem;
     }
   }
   .\[\&\:\:-webkit-inner-spin-button\]\:appearance-none {
