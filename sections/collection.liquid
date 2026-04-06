@@ -58,14 +58,11 @@
               {%- comment -%} Product image {%- endcomment -%}
               <div class="flex items-center justify-center overflow-hidden border-b border-black-primary">
                 {%- if product.featured_image != blank -%}
-                  <img
-                    src="{{ product.featured_image | image_url: width: 600 }}"
-                    alt="{{ product.featured_image.alt | escape | default: product.title }}"
-                    width="600"
-                    height="600"
-                    loading="lazy"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  >
+                  {{ product.featured_image | image_url: width: 600 | image_tag:
+                          alt: product.featured_image.alt,
+                          loading: 'lazy',
+                          class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  }}
                 {%- else -%}
                   <div class="w-full h-full bg-gray-100 flex items-center justify-center">
                     <span class="text-gray-400 text-xs">No image</span>

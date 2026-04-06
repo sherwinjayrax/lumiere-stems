@@ -97,14 +97,12 @@
         {% endif %}
       >
         {%- if img1 != blank -%}
-          <img
-            src="{{ img1 | image_url: width: 900 }}"
-            alt="{{ img1.alt | escape | default: col1.title }}"
-            loading="lazy"
-            class="w-full h-full object-cover"
-            width="{{ img1.width }}"
-            height="{{ img1.height }}"
-          >
+          
+          {{ img1 | image_url: width: 400 | image_tag:
+    loading: 'lazy',
+    widths: '200, 400, 600, 800',
+    sizes: '(max-width: 640px) 100vw, 337px'
+}}
         {%- else -%}
           <div class="w-full h-full bg-gray-100 flex items-center justify-center">
             <span class="text-gray-400 text-xs">Upload image</span>
@@ -124,14 +122,11 @@
         {% endif %}
       >
         {%- if img2 != blank -%}
-          <img
-            src="{{ img2 | image_url: width: 900 }}"
-            alt="{{ img2.alt | escape | default: col2.title }}"
-            loading="lazy"
-            class="w-full h-full object-cover"
-            width="{{ img2.width }}"
-            height="{{ img2.height }}"
-          >
+          {{ img2 | image_url: width: 400 | image_tag:
+    loading: 'lazy',
+    widths: '200, 400, 600, 800',
+    sizes: '(max-width: 640px) 100vw, 337px'
+}}
         {%- else -%}
           <div class="w-full h-full flex items-center justify-center">
             <span class="text-gray-400 text-xs">Upload image</span>
@@ -202,14 +197,11 @@
         {% endif %}
       >
         {%- if img3 != blank -%}
-          <img
-            src="{{ img3 | image_url: width: 900 }}"
-            alt="{{ img3.alt | escape | default: col3.title }}"
-            loading="lazy"
-            class="w-full h-full object-cover"
-            width="{{ img3.width }}"
-            height="{{ img3.height }}"
-          >
+          {{ img3 | image_url: width: 400 | image_tag:
+    loading: 'lazy',
+    widths: '200, 400, 600, 800',
+    sizes: '(max-width: 640px) 100vw, 337px'
+}}
         {%- else -%}
           <div class="w-full h-full bg-gray-100 flex items-center justify-center">
             <span class="text-gray-400 text-xs">Upload image</span>

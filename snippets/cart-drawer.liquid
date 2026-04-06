@@ -109,13 +109,24 @@
   </div>
 
   {%- comment -%} ── Checkout button — sticky bottom ── {%- endcomment -%}
+   
   <div class="shrink-0">
-    <a
+    {% if customer %}
+      <a
       href="/checkout"
       id="cart-checkout-btn"
       class="flex items-center justify-center w-full bg-black-primary text-white text-sm md:text-base poppins-medium tracking-normal uppercase px-6 py-4 hover:opacity-80 transition-opacity duration-200"
     >
       Check out
     </a>
+   {% else %}
+      <a
+      href="{{ routes.account_login_url }}"
+      class="flex items-center justify-center w-full bg-black-primary text-white text-sm md:text-base poppins-medium tracking-normal uppercase px-6 py-4 hover:opacity-80 transition-opacity duration-200"
+    >
+      Sign in to check out
+    </a>
+    {% endif %}
+    
   </div>
 </div>

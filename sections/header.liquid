@@ -55,13 +55,22 @@
     </div>
 
     <div class="flex max-w-[25%] w-full divide-x divide-black-primary border-l border-black-primary">
-      {%- comment -%} Sign in {%- endcomment -%}
-      <a
-        href="{{ routes.account_login_url }}"
-        class="flex grow items-center justify-center py-8 px-6 text-base poppins-medium text-black-primary tracking-tight"
-      >
-        {{ section.settings.signin_label | default: 'Sign in' }}
-      </a>
+
+      {%- if customer -%}
+        <a
+          href="{{ routes.account_logout_url }}"
+          class="flex grow items-center justify-center py-8 px-6 text-base poppins-medium text-black-primary tracking-tight"
+        >
+          {{ section.settings.signout_label | default: 'Sign out' }}
+        </a>
+      {%- else -%}
+        <a
+          href="{{ routes.account_login_url }}"
+          class="flex grow items-center justify-center py-8 px-6 text-base poppins-medium text-black-primary tracking-tight"
+        >
+          {{ section.settings.signin_label | default: 'Sign in' }}
+        </a>
+      {%- endif -%}
 
       {%- comment -%} Cart {%- endcomment -%}
       <button
@@ -146,12 +155,21 @@
 
   {%- comment -%} Main nav links {%- endcomment -%}
   <nav class="flex flex-col divide-y divide-black-primary border-b border-black-primary shrink-0">
-    <a
-      href="{{ routes.account_login_url }}"
-      class="p-6 text-lg md:text-[1.313rem] poppins-medium text-black-primary"
-    >
-      {{ section.settings.signin_label | default: 'Sign in' }}
-    </a>
+    {%- if customer -%}
+        <a
+          href="{{ routes.account_logout_url }}"
+          class="p-6 text-lg md:text-[1.313rem] poppins-medium text-black-primary"
+        >
+          {{ section.settings.signout_label | default: 'Sign out' }}
+        </a>
+      {%- else -%}
+        <a
+          href="{{ routes.account_login_url }}"
+          class="p-6 text-lg md:text-[1.313rem] poppins-medium text-black-primary"
+        >
+          {{ section.settings.signin_label | default: 'Sign in' }}
+        </a>
+      {%- endif -%}
     {%- assign sidebar_nav = linklists[section.settings.sidebar_menu] -%}
     {%- for link in sidebar_nav.links -%}
       <a
