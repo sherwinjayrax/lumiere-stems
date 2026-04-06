@@ -1,0 +1,181 @@
+{% comment %}
+  Collection template — hero banner + product grid
+  Matches: desktop (2-col hero+grid), tablet (stacked), mobile (1-col)
+{% endcomment %}
+
+<section class="bg-white flex flex-col lg:flex-row">
+  {%- comment -%} ══ HERO BANNER ══ {%- endcomment -%}
+  <div
+    class="h-105 sm:h-125 lg:h-screen lg:max-h-screen relative overflow-hidden lg:basis-1/2  flex items-center justify-center border-b border-black-primary"
+  >
+    {%- if collection.image != blank -%}
+      <img
+        src="{{ collection.image | image_url: width: 1600 }}"
+        alt="{{ collection.image.alt | escape }}"
+        loading="eager"
+        class="absolute inset-0 w-full h-full object-cover object-center"
+        width="{{ collection.image.width }}"
+        height="{{ collection.image.height }}"
+      >
+      <div class="absolute inset-0 bg-black/40"></div>
+    {%- else -%}
+      <div class="absolute inset-0 bg-gray-200 grid place-items-center text-gray-500">Add category image banner</div>
+    {%- endif -%}
+
+    {%- comment -%} Collection title {%- endcomment -%}
+    <div class="flex">
+      <h1 class="text-[2.5rem] md:text-[4.188rem] poppins-semibold text-white leading-tight drop-shadow-sm">
+        {{ collection.title }}
+      </h1>
+    </div>
+  </div>
+
+  {%- comment -%} ══ PRODUCT GRID ══ {%- endcomment -%}
+  <div class="lg:border-l border-black-primary basis-1/2">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      {%- if collection.products_count == 0 -%}
+        <div class="px-6 py-20 text-center">
+          <p class="text-sm text-black-secondary">No products found in this collection.</p>
+        </div>
+      {%- else -%}
+        <div
+          class="
+            grid grid-cols-1 sm:grid-cols-2
+            divide-y divide-black-primary
+          "
+        >
+          {%- for product in collection.products -%}
+            <a
+              href="{{ product.url }}"
+              class="
+                group flex flex-col
+                bg-white hover:bg-gray-50 transition-colors duration-200
+                border-r border-black-primary
+                {% cycle '', 'border-r-0' %}
+                text-center
+              "
+            >
+              {%- comment -%} Product image {%- endcomment -%}
+              <div class="flex items-center justify-center overflow-hidden border-b border-black-primary">
+                {%- if product.featured_image != blank -%}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 600 }}"
+                    alt="{{ product.featured_image.alt | escape | default: product.title }}"
+                    width="600"
+                    height="600"
+                    loading="lazy"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  >
+                {%- else -%}
+                  <div class="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <span class="text-gray-400 text-xs">No image</span>
+                  </div>
+                {%- endif -%}
+              </div>
+
+              {%- comment -%} Product info {%- endcomment -%}
+              <div class="flex flex-col py-8 lg:py-4">
+                <p class="text-base poppins-medium text-black-primary mb-1 leading-snug">
+                  {{ product.title | escape }}
+                </p>
+                <p class="text-sm poppins-medium text-[#808080]">{{ product.price | money }}</p>
+              </div>
+            </a>
+          {%- endfor -%}
+
+          {%- comment -%} Fill odd last cell so grid stays clean {%- endcomment -%}
+          {%- if collection.products_count == 1 or collection.products_count == 3 -%}
+            <div class="hidden md:block bg-white border-r-0"></div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} ── Pagination ── {%- endcomment -%}
+        {%- if paginate.pages > 1 -%}
+          <div class="flex items-center justify-center gap-2 px-6 py-10 border-t border-black-primary">
+            {%- if paginate.previous -%}
+              <a
+                href="{{ paginate.previous.url }}"
+                class="flex items-center gap-2 text-xs poppins-medium text-black-primary hover:opacity-50 transition-opacity duration-200"
+              >
+                <svg
+                  width="20"
+                  height="8"
+                  viewBox="0 0 20 8"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.2"
+                  stroke-linecap="round"
+                >
+                  <line x1="20" y1="4" x2="2" y2="4"/>
+                  <polyline points="6,1 2,4 6,7"/>
+                </svg>
+                Prev
+              </a>
+            {%- endif -%}
+
+            <div class="flex items-center gap-1">
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a
+                    href="{{ part.url }}"
+                    class="w-8 h-8 flex items-center justify-center text-xs poppins-medium text-black-primary border border-black-primary hover:bg-black-primary hover:text-white transition-colors duration-200"
+                  >
+                    {{ part.title }}
+                  </a>
+                {%- else -%}
+                  {%- if part.title == paginate.current_page -%}
+                    <span class="w-8 h-8 flex items-center justify-center text-xs poppins-medium bg-black-primary text-white">
+                      {{ part.title }}
+                    </span>
+                  {%- else -%}
+                    <span class="w-8 h-8 flex items-center justify-center text-xs text-black-secondary">
+                      {{ part.title }}
+                    </span>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+            {%- if paginate.next -%}
+              <a
+                href="{{ paginate.next.url }}"
+                class="flex items-center gap-2 text-xs poppins-medium text-black-primary hover:opacity-50 transition-opacity duration-200"
+              >
+                Next
+                <svg
+                  width="20"
+                  height="8"
+                  viewBox="0 0 20 8"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.2"
+                  stroke-linecap="round"
+                >
+                  <line x1="0" y1="4" x2="18" y2="4"/>
+                  <polyline points="14,1 18,4 14,7"/>
+                </svg>
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "default": 20
+    }
+  ]
+}
+{% endschema %}

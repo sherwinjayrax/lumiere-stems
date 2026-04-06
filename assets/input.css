@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-black-primary: #121212;
+  --color-black-secondary: #2a2a2a;
+  --breakpoint-xs: 360px;
+}
+
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url("https://cdn.shopify.com/s/files/1/0996/8533/5409/files/Poppins-Regular.woff2?v=1773109575")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins-Medium";
+  src: url("https://cdn.shopify.com/s/files/1/0996/8533/5409/files/Poppins-Medium.woff2?v=1773109576")
+    format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins-Semibold";
+  src: url("https://cdn.shopify.com/s/files/1/0996/8533/5409/files/Poppins-SemiBold.woff2?v=1773109576")
+    format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "Poppins-Regular", sans-serif;
+}
+
+.poppins-medium {
+  font-family: "Poppins-Medium", sans-serif;
+}
+
+.poppins-semibold {
+  font-family: "Poppins-Semibold", sans-serif;
+}

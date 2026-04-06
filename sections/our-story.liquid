@@ -1,0 +1,187 @@
+{%- liquid
+  assign img_position = section.settings.image_position | default: 'object-center'
+-%}
+
+{%- comment -%} ── Capture social icons ── {%- endcomment -%}
+{%- capture social_icons -%}
+  {%- if section.settings.instagram_url != blank -%}
+    <a href="{{ section.settings.instagram_url }}" aria-label="Instagram" target="_blank" rel="noopener noreferrer"
+       class="flex items-center justify-center w-11 h-11 rounded-full border border-black-primary shrink-0">
+      <img src="{{ 'instagram.svg' | asset_url }}" width="24" height="24" alt="Instagram icon">
+    </a>
+  {%- endif -%}
+  {%- if section.settings.pinterest_url != blank -%}
+    <a href="{{ section.settings.pinterest_url }}" aria-label="Pinterest" target="_blank" rel="noopener noreferrer"
+       class="flex items-center justify-center w-11 h-11 rounded-full border border-black-primary shrink-0">
+      <img src="{{ 'pinterest.svg' | asset_url }}" width="24" height="24" alt="Pinterest icon">
+    </a>
+  {%- endif -%}
+  {%- if section.settings.facebook_url != blank -%}
+    <a href="{{ section.settings.facebook_url }}" aria-label="Facebook" target="_blank" rel="noopener noreferrer"
+       class="flex items-center justify-center w-11 h-11 rounded-full border border-black-primary shrink-0">
+      <img src="{{ 'facebook.svg' | asset_url }}" width="24" height="24" alt="Facebook icon">
+    </a>
+  {%- endif -%}
+  {%- if section.settings.twitter_url != blank -%}
+    <a href="{{ section.settings.twitter_url }}" aria-label="Twitter / X" target="_blank" rel="noopener noreferrer"
+       class="flex items-center justify-center w-11 h-11 rounded-full border border-black-primary shrink-0">
+     <img src="{{ 'twitter.svg' | asset_url }}" width="24" height="24" alt="Twitter icon">
+    </a>
+  {%- endif -%}
+  {%- if section.settings.telegram_url != blank -%}
+    <a href="{{ section.settings.telegram_url }}" aria-label="Telegram" target="_blank" rel="noopener noreferrer"
+       class="flex items-center justify-center w-11 h-11 rounded-full border border-black-primary shrink-0">
+      <img src="{{ 'telegram.svg' | asset_url }}" width="24" height="24" alt="Telegram icon">
+    </a>
+  {%- endif -%}
+{%- endcapture -%}
+
+<section class="bg-white flex flex-col lg:flex-row lg:min-h-screen">
+  {%- comment -%} ══ LEFT / TEXT COLUMN ══ {%- endcomment -%}
+  <div class="w-full lg:w-1/2 flex items-center justify-center px-4 py-20 md:p-20 border-black-primary border-b lg:border-r lg:border-b-0">
+    <div class="w-full max-w-md text-center lg:text-center">
+      {%- comment -%} "Our Story" heading {%- endcomment -%}
+      <h2 class="text-[1.875rem] md:text-[2.5rem] text-black-primary poppins-medium">
+        {{ section.settings.eyebrow | default: 'Our Story' }}
+      </h2>
+
+      {%- comment -%} Brand name {%- endcomment -%}
+      <h1 class="text-[2.125rem] md:text-[3.125rem] text-black-primary poppins-semibold mb-6">
+        {{ section.settings.brand_name | default: 'Kyiv LuxeBouquets' }}
+      </h1>
+
+      {%- comment -%} Description {%- endcomment -%}
+      <p class="text-lg text-black-secondary leading-[140%] mb-16">
+        {{
+          section.settings.description
+          | default: 'Discover Uniquely Crafted Bouquets and Gifts for Any Occasion: Spread Joy with Our'
+        }}
+        {%- if section.settings.description_bold != blank -%}
+          <strong class="poppins-semibold text-inherit"> {{ section.settings.description_bold }}</strong>
+        {%- endif -%}
+      </p>
+
+      {%- comment -%} Social icons row {%- endcomment -%}
+      <div class="flex items-center justify-center gap-4 flex-wrap">
+        {{ social_icons }}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ══ RIGHT / IMAGE COLUMN ══ {%- endcomment -%}
+  <div class="w-full lg:w-1/2 overflow-hidden" style="min-height: 420px;">
+    {%- if section.settings.story_image != blank -%}
+      <img
+        src="{{ section.settings.story_image | image_url: width: 1400 }}"
+        alt="{{ section.settings.story_image.alt | escape | default: section.settings.brand_name }}"
+        width="{{ section.settings.story_image.width }}"
+        height="{{ section.settings.story_image.height }}"
+        loading="lazy"
+        class="w-full h-full object-cover {{ img_position }}"
+        style="min-height: 420px;"
+      >
+    {%- else -%}
+      <div class="w-full h-full bg-gray-100 flex items-center justify-center" style="min-height: 420px;">
+        <span class="text-gray-400 text-sm">Upload a story image</span>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Our Story Hero",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Top Heading",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "Lumière Stems"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description (regular weight)",
+      "default": "Discover Uniquely Crafted Bouquets and Gifts for Any Occasion: Spread Joy with Our"
+    },
+    {
+      "type": "text",
+      "id": "description_bold",
+      "label": "Description (bold suffix)",
+      "default": "Online Flower Delivery Service"
+    },
+    {
+      "type": "header",
+      "content": "Story Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Story Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        { "value": "object-center", "label": "Center" },
+        { "value": "object-top", "label": "Top" },
+        { "value": "object-bottom", "label": "Bottom" },
+        { "value": "object-left", "label": "Left" },
+        { "value": "object-right", "label": "Right" },
+        { "value": "object-left-top", "label": "Left Top" },
+        { "value": "object-right-top", "label": "Right Top" },
+        { "value": "object-left-bottom", "label": "Left Bottom" },
+        { "value": "object-right-bottom", "label": "Right Bottom" }
+      ],
+      "default": "object-center"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter / X URL"
+    },
+    {
+      "type": "url",
+      "id": "telegram_url",
+      "label": "Telegram URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Story Hero",
+      "category": "About"
+    }
+  ]
+}
+{% endschema %}

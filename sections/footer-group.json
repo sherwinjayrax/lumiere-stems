@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "t:general.footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "remind_text": "Remember to offer beautiful flowers from Lumière Stems Valentines Day, Mothers Day, Christmas. Reminds you 7 days before. No spam or sharing your address",
+        "remind_placeholder": "Your Email",
+        "remind_button_label": "Remind",
+        "address": "15/4 Xyz.",
+        "phone": "+000000000000",
+        "email": "example@gmail.com",
+        "instagram_url": "/",
+        "pinterest_url": "/",
+        "facebook_url": "/",
+        "twitter_url": "/",
+        "telegram_url": "/",
+        "shop_menu": "footer-shop-links",
+        "about_menu": "footer-about-us",
+        "policy_menu": "footer-policies"
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

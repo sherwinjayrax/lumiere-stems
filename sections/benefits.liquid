@@ -1,0 +1,108 @@
+<section
+  id="section-benefits-{{ section.id }}"
+  class="benefits-section w-full border-t border-black-secondary"
+>
+  <div class="lg:flex lg:divide-x lg:divide-black-secondary">
+    <div class="lg:basis-1/2 xs:px-4 xs:py-10 md:p-20">
+      <h2 class="poppins-semibold xs:text-[2.125rem] md:text-[3.125rem] leading-[120%] text-black-primary">
+        {{ section.settings.heading }}
+      </h2>
+    </div>
+
+    <div class="lg:basis-1/2 divide-y divide-black-secondary border-t border-black-secondary lg:border-t-0">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'benefit_item' -%}
+            <div
+              class="benefit-item xs:px-4 xs:py-10 md:p-20"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.title != blank -%}
+                <h3 class="poppins-medium xs:text-[1.625rem] md:text-[2.375rem] text-black-primary mb-4 leading-[125%]">
+                  {{ block.settings.title }}
+                </h3>
+              {%- endif -%}
+
+              {%- if block.settings.description != blank -%}
+                <p class="text-base text-black-secondary leading-[140%] max-w-prose">
+                  {{ block.settings.description }}
+                </p>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Benefits",
+  "tag": "section",
+  "class": "section-benefits",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Why choose us?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit_item",
+      "name": "Benefit item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Stylish bouquets by florists"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "At our floral studio, our professional florists craft the most elegant and stylish bouquets using only the freshest and highest quality materials available."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits",
+      "blocks": [
+        {
+          "type": "benefit_item",
+          "settings": {
+            "title": "Stylish bouquets by florists",
+            "description": "At our floral studio, our professional florists craft the most elegant and stylish bouquets using only the freshest and highest quality materials available. We stay up-to-date with the latest floral design trends and offer unique arrangements that are sure to impress. Let us brighten up your day with our stunning bouquets and same-day delivery service."
+          }
+        },
+        {
+          "type": "benefit_item",
+          "settings": {
+            "title": "On-time delivery",
+            "description": "Never miss a moment with our on-time flower delivery service. Our couriers will deliver your bouquet personally, without boxes, to ensure it arrives in perfect condition. Trust us to deliver your thoughtful gift reliably."
+          }
+        },
+        {
+          "type": "benefit_item",
+          "settings": {
+            "title": "Safe payment",
+            "description": "You can feel secure when placing an order with us, as we use industry-standard security measures to protect your payment information. Your transaction will be safe and hassle-free, so you can shop with confidence."
+          }
+        },
+        {
+          "type": "benefit_item",
+          "settings": {
+            "title": "Subscription by your needs",
+            "description": "With our subscription service tailored to your specific needs, you can enjoy the convenience of having beautiful bouquets delivered straight to your door at regular intervals. Our flexible service is perfect for busy individuals or those who want to ensure they always have fresh flowers on hand. You'll save time and money with this hassle-free solution to your floral needs."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

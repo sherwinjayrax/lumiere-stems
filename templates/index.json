@@ -1,0 +1,139 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "about_ymRJtd": {
+      "type": "about",
+      "name": "About",
+      "settings": {
+        "heading": "About us",
+        "subtitle": "OUR STORY",
+        "title": "Lumière Stems",
+        "description": "We are a modern local floral studio, which specializes in the design and delivery of unique bouquets. We have the best florists who carefully select each look, our studio cooperates directly with farms for growing different flowers, so we always have fresh flowers, which are collected by our florists in exquisite bouquets. We have a collection of fresh bouquets, collections of dried bouquets, house plants, as well as fragrant candles from luxury brands to create the perfect atmosphere. Make someone's day amazing by sending flowers, plants and gifts the same or next day. Ordering flowers online has never been easier.",
+        "button_label": "Learn More",
+        "button_url": "shopify://pages/about"
+      }
+    },
+    "benefits_GxFUz6": {
+      "type": "benefits",
+      "blocks": {
+        "benefit_item_aXbRKd": {
+          "type": "benefit_item",
+          "settings": {
+            "title": "Stylish bouquets by florists",
+            "description": "At our floral studio, our professional florists craft the most elegant and stylish bouquets using only the freshest and highest quality materials available. We stay up-to-date with the latest floral design trends and offer unique arrangements that are sure to impress. Let us brighten up your day with our stunning bouquets and same-day delivery service."
+          }
+        },
+        "benefit_item_PkGtYz": {
+          "type": "benefit_item",
+          "settings": {
+            "title": "On-time delivery",
+            "description": "Never miss a moment with our on-time flower delivery service. Our couriers will deliver your bouquet personally, without boxes, to ensure it arrives in perfect condition. Trust us to deliver your thoughtful gift reliably."
+          }
+        },
+        "benefit_item_xCAkY4": {
+          "type": "benefit_item",
+          "settings": {
+            "title": "Safe payment",
+            "description": "You can feel secure when placing an order with us, as we use industry-standard security measures to protect your payment information. Your transaction will be safe and hassle-free, so you can shop with confidence."
+          }
+        },
+        "benefit_item_9tDqW6": {
+          "type": "benefit_item",
+          "settings": {
+            "title": "Subscription by your needs",
+            "description": "With our subscription service tailored to your specific needs, you can enjoy the convenience of having beautiful bouquets delivered straight to your door at regular intervals. Our flexible service is perfect for busy individuals or those who want to ensure they always have fresh flowers on hand. You'll save time and money with this hassle-free solution to your floral needs."
+          }
+        }
+      },
+      "block_order": [
+        "benefit_item_aXbRKd",
+        "benefit_item_PkGtYz",
+        "benefit_item_xCAkY4",
+        "benefit_item_9tDqW6"
+      ],
+      "name": "Benefits",
+      "settings": {
+        "heading": "Why choose us?"
+      }
+    },
+    "contact_3rEbfd": {
+      "type": "contact",
+      "name": "Contact",
+      "settings": {
+        "store_image": "shopify://shop_images/store-image.webp",
+        "image_position": "object-center",
+        "form_heading": "To Contact Us",
+        "form_subtext": "We will call you back",
+        "phone_placeholder": "+000 XX XXX XX XX",
+        "button_label": "Book a Call",
+        "phone_1": "+000000000000",
+        "phone_2": "+000000000000",
+        "opening_hours": "Opening Hours: 8 to 11 P.M.",
+        "address": "15/4 Xyz.",
+        "instagram_url": "/",
+        "pinterest_url": "/",
+        "facebook_url": "/",
+        "twitter_url": "/",
+        "telegram_url": "/"
+      }
+    },
+    "reviews_cLGhAt": {
+      "type": "reviews",
+      "blocks": {
+        "review_hLhhGD": {
+          "type": "review",
+          "settings": {
+            "review_text": "Ordered flowers online and they were the best bouquet! Impressed everyone around. Highly recommend this flower shop!",
+            "reviewer_name": "Ronald Richards"
+          }
+        },
+        "review_zECVwQ": {
+          "type": "review",
+          "settings": {
+            "review_text": "Absolutely stunning arrangement! The flowers were fresh and beautifully arranged. Will definitely be ordering again for every occasion.",
+            "reviewer_name": "Emily Carter"
+          }
+        }
+      },
+      "block_order": [
+        "review_hLhhGD",
+        "review_zECVwQ"
+      ],
+      "name": "Reviews",
+      "settings": {
+        "subtitle": "Reviews",
+        "heading": "Our Clients say",
+        "button_label": "Read Reviews",
+        "button_url": "/"
+      }
+    },
+    "hero_kBb49r": {
+      "type": "hero",
+      "name": "Hero",
+      "settings": {
+        "brand_name": "Lumière Stems",
+        "tagline": "Discover Uniquely Crafted Bouquets and Gifts for Any Occasion: Spread Joy with Our",
+        "tagline_bold": "Online Flower Delivery Service",
+        "cta_label": "Shop now",
+        "collection_1": "fresh-flowers",
+        "collection_2": "dried-flowers",
+        "collection_3": "live-plants"
+      }
+    }
+  },
+  "order": [
+    "hero_kBb49r",
+    "about_ymRJtd",
+    "benefits_GxFUz6",
+    "contact_3rEbfd",
+    "reviews_cLGhAt"
+  ]
+}

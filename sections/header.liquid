@@ -1,0 +1,302 @@
+{%- comment -%} ── Capture social icons for drawer ── {%- endcomment -%}
+{%- capture drawer_socials -%}
+  {%- if section.settings.instagram_url != blank -%}
+    <a href="{{ section.settings.instagram_url }}" aria-label="Instagram" target="_blank" rel="noopener noreferrer"
+       >
+      <img src="{{ 'instagram.svg' | asset_url }}" width="24" height="24" alt="Instagram icon"/>
+    </a>
+  {%- endif -%}
+  {%- if section.settings.pinterest_url != blank -%}
+    <a href="{{ section.settings.pinterest_url }}" aria-label="Pinterest" target="_blank" rel="noopener noreferrer"
+       >
+      <img src="{{ 'pinterest.svg' | asset_url }}" width="24" height="24" alt="Pinterest icon"/>
+    </a>
+  {%- endif -%}
+  {%- if section.settings.facebook_url != blank -%}
+    <a href="{{ section.settings.facebook_url }}" aria-label="Facebook" target="_blank" rel="noopener noreferrer"
+       >
+     <img src="{{ 'facebook.svg' | asset_url }}" width="24" height="24" alt="Facebook icon"/>
+    </a>
+  {%- endif -%}
+  {%- if section.settings.twitter_url != blank -%}
+    <a href="{{ section.settings.twitter_url }}" aria-label="Twitter / X" target="_blank" rel="noopener noreferrer"
+       >
+     <img src="{{ 'twitter.svg' | asset_url }}" width="24" height="24" alt="Twitter icon"/>
+    </a>
+  {%- endif -%}
+  {%- if section.settings.telegram_url != blank -%}
+    <a href="{{ section.settings.telegram_url }}" aria-label="Telegram" target="_blank" rel="noopener noreferrer"
+       >
+    <img src="{{ 'telegram.svg' | asset_url }}" width="24" height="24" alt="Telegram icon"/>
+    </a>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- comment -%} ══ HEADER ══ {%- endcomment -%}
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black-primary transition-transform duration-300"
+>
+  {%- comment -%} ── DESKTOP navbar (lg+) ── {%- endcomment -%}
+  <nav
+    class="hidden lg:flex justify-between"
+    aria-label="Main navigation"
+  >
+    <div class="flex max-w-[25%] w-full divide-x divide-black-primary border-r border-black-primary">
+      {%- assign header_nav = linklists[section.settings.header_menu] -%}
+      {%- for link in header_nav.links -%}
+        <a
+          href="{{ link.url }}"
+          class="flex grow items-center justify-center py-8 px-6 text-base poppins-medium text-black-primary tracking-tight"
+        >
+          {{ link.title }}
+        </a>
+      {%- endfor -%}
+    </div>
+
+    <div class="flex max-w-[25%] w-full divide-x divide-black-primary border-l border-black-primary">
+      {%- comment -%} Sign in {%- endcomment -%}
+      <a
+        href="{{ routes.account_login_url }}"
+        class="flex grow items-center justify-center py-8 px-6 text-base poppins-medium text-black-primary tracking-tight"
+      >
+        {{ section.settings.signin_label | default: 'Sign in' }}
+      </a>
+
+      {%- comment -%} Cart {%- endcomment -%}
+      <button
+        data-cart-trigger
+        class="flex grow items-center justify-center py-8 px-6 text-base poppins-medium text-black-primary tracking-tight relative"
+        aria-label="Open cart"
+      >
+        {{ section.settings.cart_label | default: 'Cart' }}
+        <span
+          data-cart-count
+          class="absolute top-7.5 right-12.5 w-4 h-4 bg-black-primary text-white text-[10px] rounded-full flex items-center justify-center leading-none {% if cart.item_count == 0 %}hidden{% endif %}"
+        >
+          {{ cart.item_count }}
+        </span>
+      </button>
+    </div>
+  </nav>
+
+  {%- comment -%} ── MOBILE / TABLET navbar (< lg) ── {%- endcomment -%}
+  <nav
+    class="lg:hidden flex justify-between h-12 md:h-14"
+    aria-label="Mobile navigation"
+  >
+    {%- comment -%} Hamburger {%- endcomment -%}
+    <button
+      id="drawer-open"
+      class="flex items-center justify-center p-4 w-14 text-black-primary border-r border-black-primary"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="nav-drawer"
+    >
+      <img src="{{ 'menu-icon.svg' | asset_url }}" width="24" height="24" alt="Menu icon">
+    </button>
+
+    {%- comment -%} Cart icon {%- endcomment -%}
+    <button
+      data-cart-trigger
+      class="flex items-center justify-center p-4 w-14 text-black-primary border-l border-black-primary relative"
+      aria-label="Open cart"
+    >
+      <img src="{{ 'shop-bag-icon.svg' | asset_url }}" width="24" height="24" alt="Shop bag icon">
+      <span
+        data-cart-count
+        class="absolute top-2.5 right-2.5 w-4 h-4 bg-black-primary text-white text-[10px] rounded-full flex items-center justify-center leading-none {% if cart.item_count == 0 %}hidden{% endif %}"
+      >
+        {{ cart.item_count }}
+      </span>
+    </button>
+  </nav>
+</header>
+
+{%- comment -%} ══ MOBILE DRAWER ══ {%- endcomment -%}
+
+{%- comment -%} Backdrop {%- endcomment -%}
+<div
+  id="drawer-backdrop"
+  class="fixed inset-0 z-50 bg-black/30 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden backdrop-blur-xs"
+  aria-hidden="true"
+></div>
+
+{%- comment -%} Drawer panel {%- endcomment -%}
+<aside
+  id="nav-drawer"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+  class="
+    fixed top-0 left-0 z-50 h-full w-full md:w-1/2 bg-white border-r border-black-primary
+    flex flex-col -translate-x-full transition-transform duration-300 ease-in-out lg:hidden
+  "
+>
+  {%- comment -%} Close row {%- endcomment -%}
+  <div class="flex items-center h-14 px-3.5 py-2 md:px-4 md:py-3 border-b border-black-primary shrink-0">
+    <button
+      id="drawer-close"
+      class="grid place-items-center"
+      aria-label="Close menu"
+    >
+      <img src="{{ 'close-button.svg' | asset_url }}" width="24" height="24" alt="Close button icon">
+    </button>
+  </div>
+
+  {%- comment -%} Main nav links {%- endcomment -%}
+  <nav class="flex flex-col divide-y divide-black-primary border-b border-black-primary shrink-0">
+    <a
+      href="{{ routes.account_login_url }}"
+      class="p-6 text-lg md:text-[1.313rem] poppins-medium text-black-primary"
+    >
+      {{ section.settings.signin_label | default: 'Sign in' }}
+    </a>
+    {%- assign sidebar_nav = linklists[section.settings.sidebar_menu] -%}
+    {%- for link in sidebar_nav.links -%}
+      <a
+        href="{{ link.url }}"
+        class="p-6 text-lg md:text-[1.313rem] poppins-medium text-black-primary"
+      >
+        {{ link.title }}
+      </a>
+    {%- endfor -%}
+  </nav>
+
+  {%- comment -%} Social icons {%- endcomment -%}
+  <div class="px-5 py-6 flex items-center justify-around mt-auto shrink-0">
+    {{ drawer_socials }}
+  </div>
+</aside>
+
+<script>
+  (function () {
+    const header = document.getElementById('site-header');
+    const openBtn = document.getElementById('drawer-open');
+    const closeBtn = document.getElementById('drawer-close');
+    const drawer = document.getElementById('nav-drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+
+    // ── Hide on scroll down / show on scroll up ──
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const currentY = window.scrollY;
+            if (currentY > lastY && currentY > 60) {
+              // Scrolling DOWN — hide
+              header.style.transform = 'translateY(-100%)';
+            } else {
+              // Scrolling UP — show
+              header.style.transform = 'translateY(0)';
+            }
+            lastY = currentY;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+
+    // ── Drawer open ──
+    function openDrawer() {
+      drawer.classList.remove('-translate-x-full');
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      backdrop.classList.add('opacity-100', 'pointer-events-auto');
+      openBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+
+    // ── Drawer close ──
+    function closeDrawer() {
+      drawer.classList.add('-translate-x-full');
+      backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      openBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      openBtn.focus();
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDrawer();
+    });
+
+    // Shopify theme editor re-init
+    document.addEventListener('shopify:section:load', () => {
+      lastY = window.scrollY;
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "limit": 1,
+  "class": "site-header-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "header_menu",
+      "label": "Header Menu"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "sidebar_menu",
+      "label": "Sidebar Menu"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter / X URL"
+    },
+    {
+      "type": "url",
+      "id": "telegram_url",
+      "label": "Telegram URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header"
+    }
+  ]
+}
+{% endschema %}

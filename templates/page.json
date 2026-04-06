@@ -1,0 +1,97 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {}
+    },
+    "our_story_3mQ8Qq": {
+      "type": "our-story",
+      "name": "Our Story Hero",
+      "settings": {
+        "eyebrow": "Our Story",
+        "brand_name": "Lumière Stems",
+        "description": "Discover Uniquely Crafted Bouquets and Gifts for Any Occasion: Spread Joy with Our",
+        "description_bold": "Online Flower Delivery Service",
+        "story_image": "shopify://shop_images/store-owner.webp",
+        "image_position": "object-center",
+        "instagram_url": "/",
+        "pinterest_url": "/",
+        "facebook_url": "/",
+        "twitter_url": "/",
+        "telegram_url": "/"
+      }
+    },
+    "our_story_content_YqhFdN": {
+      "type": "our-story-content",
+      "blocks": {
+        "story_block_d7giCX": {
+          "type": "story_block",
+          "settings": {
+            "image": "shopify://shop_images/block-image-1.webp",
+            "image_position": "object-center",
+            "image_placement": "left",
+            "block_heading": "The Art of the Bouquet",
+            "block_text": "<p>Every bouquet we create begins with a single idea — to make someone feel truly seen. Our florists hand-select each stem at peak bloom, pairing textures, colours, and fragrances into arrangements that go beyond decoration. Whether it's a sweeping romantic gesture or a quiet everyday reminder, our bouquets are designed to carry meaning in every petal.<br/><br/></p>"
+          }
+        },
+        "story_block_H4k9m9": {
+          "type": "story_block",
+          "settings": {
+            "image": "shopify://shop_images/block-image-2.webp",
+            "image_position": "object-center",
+            "image_placement": "right",
+            "block_heading": "Gifts That Say More",
+            "block_text": "<p>The right gift doesn't just arrive — it lingers. Our curated gift collections combine fresh florals with handpicked lifestyle pieces, from scented candles to artisan wraps, each thoughtfully assembled to create a moment worth remembering. Perfect for birthdays, anniversaries, celebrations, or simply because — because sometimes no occasion is the best occasion.<br/><br/></p>"
+          }
+        },
+        "story_block_WAmiDi": {
+          "type": "story_block",
+          "settings": {
+            "image": "shopify://shop_images/block-image-3.webp",
+            "image_position": "object-center",
+            "image_placement": "left",
+            "block_heading": "Flowers That Shape a Space",
+            "block_text": "<p>A room changes when flowers enter it. We believe in designing arrangements that don't just sit on a table but transform the energy of a space entirely — bringing warmth to a hallway, softness to a workspace, and life to any corner that needs it. Our ambiance collections are made for homes, events, and studios that take atmosphere seriously.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "story_block_d7giCX",
+        "story_block_H4k9m9",
+        "story_block_WAmiDi"
+      ],
+      "name": "Our Story Content",
+      "settings": {
+        "eyebrow": "Our Story",
+        "heading": "Our Founder's Passion",
+        "intro_text": "<p>Lumière Stems was founded in 2010 by John Doe with the goal of bringing unique and exquisite bouquets to the people of London. John has always had a passion for flowers and design, and his vision was to create a local floral studio that would specialize in the creation and delivery of fresh, beautiful, and distinctive bouquets.</p>"
+      }
+    },
+    "discover_YJ6MCp": {
+      "type": "discover",
+      "name": "Discover",
+      "settings": {
+        "heading": "Discover Our Beautiful Bouquets",
+        "subtext": "Explore our collection of exquisite bouquets and surprise your loved ones with the perfect gift. Click the button below to start shopping",
+        "button_label": "Shop Now",
+        "button_url": "shopify://collections"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "our_story_3mQ8Qq",
+    "our_story_content_YqhFdN",
+    "discover_YJ6MCp"
+  ]
+}

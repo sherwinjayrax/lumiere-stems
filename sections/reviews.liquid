@@ -1,0 +1,330 @@
+<section
+  class="reviews-section h-screen w-full bg-white py-20 text-center border-t border-black-primary flex flex-col items-center justify-center"
+  data-reviews-section
+>
+  <p class="poppins-medium xs:text-xs md:text-sm text-black-primary uppercase mb-2">
+    {{ section.settings.subtitle | default: 'Reviews' }}
+  </p>
+  <h2 class="poppins-semibold xs:text-[2.125rem] md:text-[3.125rem] text-black-primary mb-4 leading-[120%]">
+    {{ section.settings.heading | default: 'Our Clients say' }}
+  </h2>
+
+  {%- comment -%} ── Carousel ── {%- endcomment -%}
+  <div class="relative flex items-center justify-center w-full gap-6">
+    {%- comment -%} Prev arrow — desktop only {%- endcomment -%}
+    <button
+      class="reviews-prev hidden lg:flex shrink-0 w-12 items-center justify-center text-black-primary transition-colors duration-200 z-10 self-center cursor-pointer"
+      aria-label="Previous review"
+    >
+      <svg
+        width="10"
+        height="18"
+        viewBox="0 0 10 18"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="9 1 1 9 9 17"/>
+      </svg>
+    </button>
+
+    {%- comment -%} Clipping wrapper — THIS is what prevents bleed-through {%- endcomment -%}
+    <div class="reviews-viewport w-full max-w-3xl overflow-hidden">
+      <div
+        class="reviews-track flex"
+        style="will-change: transform; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);"
+      >
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' -%}
+            <div class="review-slide w-full shrink-0 px-6 md:px-10" {{ block.shopify_attributes }}>
+              <blockquote class="mb-4">
+                <p class="text-[1.375rem] md:text-3xl poppins-semibold font-extrabold text-black-primary leading-[120%]">
+                  <span class="inline-block text-3xl md:text-4xl align-top leading-none">&ldquo;</span>
+                  {{- block.settings.review_text -}}
+                  <span class="inline-block text-3xl md:text-4xl align-bottom leading-none">&rdquo;</span>
+                </p>
+              </blockquote>
+              {%- if block.settings.reviewer_name != blank -%}
+                <p class="text-base poppins-medium text-black-primary mt-4">
+                  &ndash; {{ block.settings.reviewer_name }}
+                </p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%} Next arrow — desktop only {%- endcomment -%}
+    <button
+      class="reviews-next hidden lg:flex shrink-0 w-12 items-center justify-center text-black-primary transition-colors duration-200 z-10 self-center cursor-pointer"
+      aria-label="Next review"
+    >
+      <svg
+        width="10"
+        height="18"
+        viewBox="0 0 10 18"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="1 1 9 9 1 17"/>
+      </svg>
+    </button>
+  </div>
+
+  {%- comment -%} ── Dot indicators ── {%- endcomment -%}
+  {%- assign review_count = 0 -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'review' -%}{%- assign review_count = review_count | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+
+  {%- if review_count > 1 -%}
+    <div class="reviews-dots flex items-center justify-center gap-2 mt-8 mb-10">
+      {%- for i in (1..review_count) -%}
+        <button
+          class="review-dot w-2 h-2 rounded-full transition-colors duration-300 {% if forloop.first %}bg-gray-900{% else %}bg-gray-300{% endif %}"
+          data-index="{{ forloop.index0 }}"
+          aria-label="Go to review {{ forloop.index }}"
+        ></button>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <div class="mt-10 mb-10"></div>
+  {%- endif -%}
+
+  {%- comment -%} ── CTA Button ── {%- endcomment -%}
+  {%- if section.settings.button_label != blank and section.settings.button_url != blank -%}
+    <a
+      href="{{ section.settings.button_url }}"
+      class="inline-block poppins-medium border border-black-primary text-black-primary  xs:text-sm md:text-base uppercase px-6 py-4 hover:bg-black-primary hover:text-white transition-colors duration-200 mt-16 xs:self-stretch md:self-auto xs:mx-7 md:mx-0"
+    >
+      {{ section.settings.button_label }}
+    </a>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    function initReviews(section) {
+      const track = section.querySelector('.reviews-track');
+      const viewport = section.querySelector('.reviews-viewport');
+      const slides = section.querySelectorAll('.review-slide');
+      const dots = section.querySelectorAll('.review-dot');
+      const prevBtn = section.querySelector('.reviews-prev');
+      const nextBtn = section.querySelector('.reviews-next');
+
+      if (!track || slides.length === 0) return;
+
+      let current = 0;
+      const total = slides.length;
+
+      // Force each slide to exactly 100% of the viewport width
+      function setSlideSizes() {
+        const w = viewport.offsetWidth;
+        slides.forEach((slide) => {
+          slide.style.width = w + 'px';
+          slide.style.minWidth = w + 'px';
+          slide.style.maxWidth = w + 'px';
+        });
+        // Re-apply current position without animation
+        track.style.transition = 'none';
+        track.style.transform = `translateX(-${current * viewport.offsetWidth}px)`;
+        requestAnimationFrame(() => {
+          track.style.transition = 'transform 0.45s cubic-bezier(0.4,0,0.2,1)';
+        });
+      }
+
+      function goTo(index) {
+        current = ((index % total) + total) % total;
+        track.style.transform = `translateX(-${current * viewport.offsetWidth}px)`;
+        dots.forEach((d, i) => {
+          d.classList.toggle('bg-gray-900', i === current);
+          d.classList.toggle('bg-gray-300', i !== current);
+        });
+      }
+
+      setSlideSizes();
+      window.addEventListener('resize', setSlideSizes);
+
+      if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
+      if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+      dots.forEach((dot) => dot.addEventListener('click', () => goTo(parseInt(dot.dataset.index))));
+
+      // ── Drag (mouse) + Swipe (touch) ──
+      let startX = 0;
+      let startY = 0;
+      let isDragging = false;
+      let dragDist = 0;
+      const THRESHOLD = 50;
+
+      // Cursor style
+      viewport.style.cursor = 'grab';
+
+      // ── Mouse drag ──
+      viewport.addEventListener('mousedown', (e) => {
+        startX = e.clientX;
+        isDragging = true;
+        dragDist = 0;
+        viewport.style.cursor = 'grabbing';
+        viewport.style.userSelect = 'none';
+        track.style.transition = 'none';
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        dragDist = e.clientX - startX;
+        track.style.transform = `translateX(${-current * viewport.offsetWidth + dragDist}px)`;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        viewport.style.cursor = 'grab';
+        viewport.style.userSelect = '';
+        track.style.transition = 'transform 0.45s cubic-bezier(0.4,0,0.2,1)';
+        if (Math.abs(dragDist) > THRESHOLD) {
+          goTo(dragDist < 0 ? current + 1 : current - 1);
+        } else {
+          // Snap back
+          track.style.transform = `translateX(-${current * viewport.offsetWidth}px)`;
+        }
+        dragDist = 0;
+      });
+
+      // Prevent ghost image on drag
+      viewport.addEventListener('dragstart', (e) => e.preventDefault());
+
+      // ── Touch swipe ──
+      viewport.addEventListener(
+        'touchstart',
+        (e) => {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          isDragging = true;
+          dragDist = 0;
+          track.style.transition = 'none';
+        },
+        { passive: true }
+      );
+
+      viewport.addEventListener(
+        'touchmove',
+        (e) => {
+          if (!isDragging) return;
+          const dx = Math.abs(e.touches[0].clientX - startX);
+          const dy = Math.abs(e.touches[0].clientY - startY);
+          if (dx > dy) {
+            e.preventDefault();
+            dragDist = e.touches[0].clientX - startX;
+            track.style.transform = `translateX(${-current * viewport.offsetWidth + dragDist}px)`;
+          }
+        },
+        { passive: false }
+      );
+
+      viewport.addEventListener(
+        'touchend',
+        (e) => {
+          if (!isDragging) return;
+          isDragging = false;
+          track.style.transition = 'transform 0.45s cubic-bezier(0.4,0,0.2,1)';
+          dragDist = e.changedTouches[0].clientX - startX;
+          if (Math.abs(dragDist) > THRESHOLD) {
+            goTo(dragDist < 0 ? current + 1 : current - 1);
+          } else {
+            track.style.transform = `translateX(-${current * viewport.offsetWidth}px)`;
+          }
+          dragDist = 0;
+        },
+        { passive: true }
+      );
+    }
+
+    // Init on DOMContentLoaded
+    document.querySelectorAll('[data-reviews-section]').forEach(initReviews);
+
+    // Shopify theme editor live reload
+    document.addEventListener('shopify:section:load', (e) => {
+      const s = e.target.querySelector('[data-reviews-section]');
+      if (s) initReviews(s);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Reviews",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Reviews"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Clients say"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Read Reviews"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "Ordered flowers online and they were the best bouquet! Impressed everyone around. Highly recommend this flower shop!"
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer Name",
+          "default": "Ronald Richards"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "Ordered flowers online and they were the best bouquet! Impressed everyone around. Highly recommend this flower shop!",
+            "reviewer_name": "Ronald Richards"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "Absolutely stunning arrangement! The flowers were fresh and beautifully arranged. Will definitely be ordering again for every occasion.",
+            "reviewer_name": "Emily Carter"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

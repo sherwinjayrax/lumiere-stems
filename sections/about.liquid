@@ -1,0 +1,92 @@
+<section
+  id="section-about-us-{{ section.id }}"
+  class="about-section w-full"
+>
+  <div class="about-inner lg:flex lg:divide-x lg:divide-black-secondary">
+    <div class="lg:basis-1/2 xs:px-4 xs:py-10 md:p-20 border-b border-black-secondary lg:border-b-0">
+      <h2 class="poppins-semibold xs:text-[2.125rem] md:text-[3.125rem] leading-[120%] text-black-primary">
+        {{ section.settings.heading }}
+      </h2>
+    </div>
+
+    <div class="lg:basis-1/2 xs:px-4 xs:py-10 md:p-20">
+      {%- if section.settings.subtitle != blank -%}
+        <p class="poppins-medium xs:text-xs md:text-sm uppercase text-black-primary mb-6">
+          {{ section.settings.subtitle }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.title != blank -%}
+        <h3 class="poppins-medium xs:text-[1.625rem] md:text-[2.375rem] text-black-primary mb-4 leading-[120%]">
+          {{ section.settings.title }}
+        </h3>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <p class="about-description text-base text-black-secondary leading-[140%] max-w-prose mb-16">
+          {{ section.settings.description }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a
+          href="{{ section.settings.button_url }}"
+          class="poppins-medium xs:text-sm sm:text-base xs:w-full md:w-[35%] text-center inline-block border border-black-primary text-black-primary tracking-[2.5%] uppercase px-6 py-4 hover:bg-black-primary hover:text-white transition-colors duration-200"
+        >
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About",
+  "tag": "section",
+  "class": "section-about-us",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "About us"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Story subtitle",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Story title",
+      "default": "Lumière Stems"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "We are a modern local floral studio, which specializes in the design and delivery of unique bouquets. We have the best florists who carefully select each look, our studio cooperates directly with farms for growing different flowers, so we always have fresh flowers, which are collected by our florists in exquisite bouquets. We have a collection of fresh bouquets, collections of dried bouquets, house plants, as well as fragrant candles from luxury brands to create the perfect atmosphere. Make someone's day amazing by sending flowers, plants and gifts the same or next day. Ordering flowers online has never been easier."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,292 @@
+{%- liquid
+  assign col1 = section.settings.collection_1
+  assign col2 = section.settings.collection_2
+  assign col3 = section.settings.collection_3
+
+  assign img1 = section.settings.image_1
+  assign img2 = section.settings.image_2
+  assign img3 = section.settings.image_3
+
+  if img1 == blank and col1 != blank and col1.featured_image != blank
+    assign img1 = col1.featured_image
+  endif
+  if img2 == blank and col2 != blank and col2.featured_image != blank
+    assign img2 = col2.featured_image
+  endif
+  if img3 == blank and col3 != blank and col3.featured_image != blank
+    assign img3 = col3.featured_image
+  endif
+-%}
+
+<section class="bg-white border-t border-black-primary">
+  {%- comment -%}
+    ─────────────────────────────────────────────────
+    GRID LAYOUT
+    Mobile (grid-cols-2):
+      [Hero — col-span-2]
+      [Cat1 text | Cat1 image]
+      [Cat2 image | Cat2 text]
+      [Cat3 text | Cat3 image]
+
+    Desktop (lg: grid-cols-3):
+      [Hero — row-span-3] [Cat1 text] [Cat1 image]
+      [Hero — cont.]      [Cat2 image] [Cat2 text]
+      [Hero — cont.]      [Cat3 text] [Cat3 image]
+    ─────────────────────────────────────────────────
+  {%- endcomment -%}
+
+  {%- comment -%} Outer flex — hero 50% | categories 50% on desktop ══ {%- endcomment -%}
+  <div class="flex flex-col lg:flex-row border-b border-black-primary">
+    {%- comment -%} ══ HERO TEXT — full width mobile, basis-1/2 desktop ══ {%- endcomment -%}
+    <div
+      class="
+        h-69 md:h-180 lg:h-auto
+        lg:basis-1/2 lg:shrink-0
+        flex flex-col justify-center
+        px-4 py-10 md:p-20
+        border-b border-black-primary lg:border-b-0 lg:border-r lg:border-black-primary
+        text-center md:text-center lg:text-left
+      "
+    >
+      <h1 class="text-[2.5rem] md:text-[4.188rem] poppins-semibold text-black-primary leading-[120%] mb-4">
+        {{ section.settings.brand_name | default: 'Lumière Stems' }}
+      </h1>
+      <p class="text-sm md:text-lg text-black-secondary leading-relaxed">
+        {{
+          section.settings.tagline
+          | default: 'Discover Uniquely Crafted Bouquets and Gifts for Any Occasion: Spread Joy with Our'
+        }}
+        {%- if section.settings.tagline_bold != blank -%}
+          <strong class="poppins-semibold text-black-primary"> {{ section.settings.tagline_bold }}</strong>
+        {%- endif -%}
+      </p>
+    </div>
+
+    {%- comment -%} ══ CATEGORIES — basis-1/2 desktop, 2-col grid ══ {%- endcomment -%}
+    <div class="lg:basis-1/2 lg:shrink-0 grid grid-cols-2 divide-y divide-black-primary ">
+      {%- comment -%} ══ COLLECTION 1 — text left, image right ══ {%- endcomment -%}
+
+      {%- comment -%} Cat 1 text {%- endcomment -%}
+      <div
+        class="
+          flex flex-col items-center justify-center
+          p-6
+          border-r border-black-primary
+        "
+      >
+        <h2 class="text-[1.625rem] md:text-[2.375rem] poppins-medium text-black-primary leading-[120%]">
+          {%- if col1 != blank -%}{{ col1.title }}{%- else -%}Fresh Flowers{%- endif -%}
+        </h2>
+        <a
+          href="{%- if col1 != blank -%}{{ col1.url }}{%- else -%}/collections/all{%- endif -%}"
+          class="inline-flex items-center gap-2 text-sm md:text-base poppins-semibold text-black-primary hover:opacity-50 transition-opacity duration-200 mt-6 self-center"
+        >
+          {{ section.settings.cta_label | default: 'Shop now' }}
+          <img src="{{ 'arrow-right.svg' | asset_url }}" alt="Arrow right icon" width="24" height="24">
+        </a>
+      </div>
+
+      {%- comment -%} Cat 1 image {%- endcomment -%}
+      <div
+        class="
+          overflow-hidden aspect-square
+          {% if section.settings.image_bg_1 != blank %}{% else %}bg-gray-50{% endif %}
+        "
+        {% if section.settings.image_bg_1 != blank %}
+          style="background-color: {{ section.settings.image_bg_1 }};"
+        {% endif %}
+      >
+        {%- if img1 != blank -%}
+          <img
+            src="{{ img1 | image_url: width: 900 }}"
+            alt="{{ img1.alt | escape | default: col1.title }}"
+            loading="lazy"
+            class="w-full h-full object-cover"
+            width="{{ img1.width }}"
+            height="{{ img1.height }}"
+          >
+        {%- else -%}
+          <div class="w-full h-full bg-gray-100 flex items-center justify-center">
+            <span class="text-gray-400 text-xs">Upload image</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ══ COLLECTION 2 — image left, text right ══ {%- endcomment -%}
+
+      {%- comment -%} Cat 2 image {%- endcomment -%}
+      <div
+        class="overflow-hidden aspect-square border-r border-black-primary"
+        {% if section.settings.image_bg_2 != blank %}
+          style="background-color: {{ section.settings.image_bg_2 }};"
+        {% else %}
+          style="background-color: #f3e9df;"
+        {% endif %}
+      >
+        {%- if img2 != blank -%}
+          <img
+            src="{{ img2 | image_url: width: 900 }}"
+            alt="{{ img2.alt | escape | default: col2.title }}"
+            loading="lazy"
+            class="w-full h-full object-cover"
+            width="{{ img2.width }}"
+            height="{{ img2.height }}"
+          >
+        {%- else -%}
+          <div class="w-full h-full flex items-center justify-center">
+            <span class="text-gray-400 text-xs">Upload image</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Cat 2 text {%- endcomment -%}
+      <div
+        class="
+          flex flex-col items-center justify-center
+          p-6
+        "
+      >
+        <h2 class="text-[1.625rem] md:text-[2.375rem] poppins-medium text-black-primary leading-[120%]">
+          {%- if col2 != blank -%}{{ col2.title }}{%- else -%}Dried Flowers{%- endif -%}
+        </h2>
+        <a
+          href="{%- if col2 != blank -%}{{ col2.url }}{%- else -%}/collections/all{%- endif -%}"
+          class="inline-flex items-center gap-2 text-sm md:text-base poppins-semibold text-black-primary hover:opacity-50 transition-opacity duration-200 mt-6 self-center"
+        >
+          <img
+            src="{{ 'arrow-right.svg' | asset_url }}"
+            class="rotate-180"
+            alt="Arrow right icon"
+            width="24"
+            height="24"
+          >
+          {{ section.settings.cta_label | default: 'Shop now' }}
+        </a>
+      </div>
+
+      {%- comment -%} ══ COLLECTION 3 — text left, image right ══ {%- endcomment -%}
+
+      {%- comment -%} Cat 3 text {%- endcomment -%}
+      <div
+        class="
+          flex flex-col items-center justify-center
+          p-6
+          border-r border-black-primary
+        "
+      >
+        <h2 class="text-xl md:text-2xl lg:text-3xl poppins-bold text-black-primary leading-tight">
+          {%- if col3 != blank -%}{{ col3.title }}{%- else -%}Live Plants{%- endif -%}
+        </h2>
+        <a
+          href="{%- if col3 != blank -%}{{ col3.url }}{%- else -%}/collections/all{%- endif -%}"
+          class="inline-flex items-center gap-2 text-sm md:text-base poppins-semibold text-black-primary hover:opacity-50 transition-opacity duration-200 mt-6 self-center"
+        >
+          {{ section.settings.cta_label | default: 'Shop now' }}
+          <img
+            src="{{ 'arrow-right.svg' | asset_url }}"
+            alt="Arrow right icon"
+            width="24"
+            height="24"
+          >
+        </a>
+      </div>
+
+      {%- comment -%} Cat 3 image {%- endcomment -%}
+      <div
+        class="
+          overflow-hidden aspect-square
+          {% if section.settings.image_bg_3 != blank %}{% else %}bg-gray-50{% endif %}
+        "
+        {% if section.settings.image_bg_3 != blank %}
+          style="background-color: {{ section.settings.image_bg_3 }};"
+        {% endif %}
+      >
+        {%- if img3 != blank -%}
+          <img
+            src="{{ img3 | image_url: width: 900 }}"
+            alt="{{ img3.alt | escape | default: col3.title }}"
+            loading="lazy"
+            class="w-full h-full object-cover"
+            width="{{ img3.width }}"
+            height="{{ img3.height }}"
+          >
+        {%- else -%}
+          <div class="w-full h-full bg-gray-100 flex items-center justify-center">
+            <span class="text-gray-400 text-xs">Upload image</span>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- comment -%} end categories wrapper {%- endcomment -%}
+  </div>
+  {%- comment -%} end outer flex {%- endcomment -%}
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand Text"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "Lumière Stems"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline (regular)",
+      "default": "Discover Uniquely Crafted Bouquets and Gifts for Any Occasion: Spread Joy with Our"
+    },
+    {
+      "type": "text",
+      "id": "tagline_bold",
+      "label": "Tagline (bold suffix)",
+      "default": "Online Flower Delivery Service"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Shop Now Label",
+      "default": "Shop now"
+    },
+    {
+      "type": "header",
+      "content": "Collection 1 — Fresh Flowers"
+    },
+    {
+      "type": "collection",
+      "id": "collection_1",
+      "label": "Collection 1"
+    },
+    {
+      "type": "header",
+      "content": "Collection 2 — Dried Flowers"
+    },
+    {
+      "type": "collection",
+      "id": "collection_2",
+      "label": "Collection 2"
+    },
+    {
+      "type": "header",
+      "content": "Collection 3 — Live Plants"
+    },
+    {
+      "type": "collection",
+      "id": "collection_3",
+      "label": "Collection 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

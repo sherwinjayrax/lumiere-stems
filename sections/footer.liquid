@@ -1,0 +1,338 @@
+<footer class="bg-white border-t border-black-primary" role="contentinfo">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-b border-black-primary">
+    {%- comment -%} ── Col 1 · Remind Block (Black) ── {%- endcomment -%}
+    <div
+      class="
+        xs:px-4 xs:py-10
+        md:p-10
+        border-black-primary
+        xs:border-b md:border-b-0 md:border-r
+      "
+    >
+      {%- if section.settings.remind_text != blank -%}
+        <p class="text-black-primary text-base leading-[140%] mb-8">
+          {{ section.settings.remind_text }}
+        </p>
+      {%- endif -%}
+
+      <div class="flex flex-col gap-3">
+        <input
+          type="email"
+          name="remind_email"
+          placeholder="{{ section.settings.remind_placeholder | default: 'Your Email' }}"
+          class="w-full bg-white text-black-primary text-sm xs:px-4 xs:py-3 md:p-4 outline-none border border-[#D2D2D7] placeholder-[#808080]"
+          aria-label="Your email address"
+        >
+        <button
+          type="button"
+          class="w-full cursor-pointer bg-black-primary text-white xs:text-sm md:text-base poppins-medium uppercase px-4 py-3.5"
+        >
+          {{ section.settings.remind_button_label | default: 'Remind' }}
+        </button>
+      </div>
+    </div>
+
+    {%- comment -%} ── Col 2 · Contact Us ── {%- endcomment -%}
+    <div
+      class="
+        xs:px-4 xs:py-10
+        md:p-10
+        border-black-primary
+        xs:border-b md:border-b-0 md:border-r
+      "
+    >
+      <h3 class="poppins-medium xs:text-lg md:text-[1.313rem] text-[#808080] xs:mb-4 md:mb-6">Contact Us</h3>
+
+      {%- if section.settings.address != blank -%}
+        <div class="xs:mb-4 md:mb-6">
+          <span class="text-sm text-[#808080] mb-2">Address</span>
+          <p class="poppins-medium xs:text-sm md:text-base text-black-primary leading-snug">
+            {{ section.settings.address }}
+          </p>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.phone != blank -%}
+        <div class="xs:mb-4 md:mb-6">
+          <span class="text-sm text-[#808080] mb-2">Phone</span>
+          <a
+            href="tel:{{ section.settings.phone | remove: ' ' }}"
+            class="block poppins-medium xs:text-sm md:text-base text-black-primary"
+          >
+            {{ section.settings.phone }}
+          </a>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.email != blank -%}
+        <div class="xs:mb-4 md:mb-6">
+          <span class="text-sm text-[#808080] mb-2">General Inquiry:</span>
+          <a
+            href="mailto:{{ section.settings.email }}"
+            class="block poppins-medium xs:text-sm md:text-base text-black-primary"
+          >
+            {{ section.settings.email }}
+          </a>
+        </div>
+      {%- endif -%}
+
+      <h3 class="poppins-medium xs:text-lg md:text-[1.313rem] text-[#808080] xs:mb-4 md:mb-6">Follow Us</h3>
+      <ul class="flex items-center gap-5" role="list">
+        {%- if section.settings.instagram_url != blank -%}
+          <li>
+            <a
+              href="{{ section.settings.instagram_url }}"
+              aria-label="Instagram"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block text-gray-900 hover:text-gray-400 transition-colors duration-200"
+            >
+              <img src="{{ 'instagram.svg' | asset_url }}" width="24" height="24" alt="Instagram icon">
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- if section.settings.pinterest_url != blank -%}
+          <li>
+            <a
+              href="{{ section.settings.pinterest_url }}"
+              aria-label="Pinterest"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block text-gray-900 hover:text-gray-400 transition-colors duration-200"
+            >
+              <img src="{{ 'pinterest.svg' | asset_url }}" width="24" height="24" alt="Pinterest icon">
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- if section.settings.facebook_url != blank -%}
+          <li>
+            <a
+              href="{{ section.settings.facebook_url }}"
+              aria-label="Facebook"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block text-gray-900 hover:text-gray-400 transition-colors duration-200"
+            >
+              <img src="{{ 'facebook.svg' | asset_url }}" width="24" height="24" alt="Facebook icon">
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- if section.settings.twitter_url != blank -%}
+          <li>
+            <a
+              href="{{ section.settings.twitter_url }}"
+              aria-label="Twitter / X"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block text-gray-900 hover:text-gray-400 transition-colors duration-200"
+            >
+              <img src="{{ 'twitter.svg' | asset_url }}" width="24" height="24" alt="Twitter icon">
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- if section.settings.telegram_url != blank -%}
+          <li>
+            <a
+              href="{{ section.settings.telegram_url }}"
+              aria-label="Telegram"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block text-gray-900 hover:text-gray-400 transition-colors duration-200"
+            >
+              <img src="{{ 'telegram.svg' | asset_url }}" width="24" height="24" alt="Telegram icon">
+            </a>
+          </li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    {%- comment -%} ── Col 3 · Shop ── {%- endcomment -%}
+    <div
+      class="
+        xs:px-4 xs:py-10
+        md:p-10
+        border-b border-black-primary
+        md:border-t md:border-r md:border-black-primary
+        lg:border-t-0 lg:border-b-0 lg:border-r lg:border-black-primary
+      "
+    >
+      {%- if section.settings.shop_menu != blank -%}
+        {%- assign shop_menu = linklists[section.settings.shop_menu] -%}
+        {%- if shop_menu.links.size > 0 -%}
+          <h3 class="poppins-medium xs:text-lg md:text-[1.313rem] text-[#808080] xs:mb-4 md:mb-6">Shop</h3>
+          <ul class="flex flex-col gap-2" role="list">
+            {%- for link in shop_menu.links -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="poppins-medium xs:text-sm md:text-base text-black-primary hover:opacity-80 transition-colors duration-200 leading-[120%]"
+                >
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── Col 4 · About Us ── {%- endcomment -%}
+    <div
+      class="
+        xs:px-4 xs:py-10
+        md:p-10
+        md:border-t md:border-black-primary
+        lg:border-t-0
+      "
+    >
+      {%- if section.settings.about_menu != blank -%}
+        {%- assign about_menu = linklists[section.settings.about_menu] -%}
+        {%- if about_menu.links.size > 0 -%}
+          <h3 class="poppins-medium xs:text-lg md:text-[1.313rem] text-[#808080] xs:mb-4 md:mb-6">About Us</h3>
+          <ul class="flex flex-col gap-2 mb-6" role="list">
+            {%- for link in about_menu.links -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="poppins-medium xs:text-sm md:text-base text-black-primary hover:opacity-80 transition-colors duration-200 leading-[120%]"
+                >
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if section.settings.policy_menu != blank -%}
+        {%- assign policy_menu = linklists[section.settings.policy_menu] -%}
+        {%- if policy_menu.links.size > 0 -%}
+          <ul class="flex flex-col gap-2" role="list">
+            {%- for link in policy_menu.links -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="poppins-medium xs:text-sm md:text-base text-black-primary hover:opacity-80 transition-colors duration-200 leading-[120%]"
+                >
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Remind Block"
+    },
+    {
+      "type": "textarea",
+      "id": "remind_text",
+      "label": "Remind Text",
+      "default": "Remember to offer beautiful flowers from Lumière Stems Valentines Day, Mothers Day, Christmas. Reminds you 7 days before. No spam or sharing your address"
+    },
+    {
+      "type": "text",
+      "id": "remind_placeholder",
+      "label": "Input Placeholder",
+      "default": "Your Email"
+    },
+    {
+      "type": "text",
+      "id": "remind_button_label",
+      "label": "Button Label",
+      "default": "Remind"
+    },
+    {
+      "type": "header",
+      "content": "Contact Information"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address",
+      "default": "15/4 Xyz."
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number",
+      "default": "+000000000000"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "General Enquiry Email",
+      "default": "example@gmail.com"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter / X URL"
+    },
+    {
+      "type": "url",
+      "id": "telegram_url",
+      "label": "Telegram URL"
+    },
+    {
+      "type": "header",
+      "content": "Navigation Menus"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "about_menu",
+      "label": "About Us Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "policy_menu",
+      "label": "Policy Links Menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "category": "Footer"
+    }
+  ]
+}
+{% endschema %}

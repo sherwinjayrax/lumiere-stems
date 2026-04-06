@@ -1,0 +1,355 @@
+{% comment %}
+  This section is used in the product template to render product page with
+  media, content, and add-to-cart form.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
+{% endcomment %}
+
+<section class="bg-white min-h-screen lg:h-screen lg:flex lg:overflow-hidden">
+  {%- comment -%} ══ LEFT — Product Image ══ {%- endcomment -%}
+  <div class="relative w-full lg:w-1/2 lg:h-full overflow-hidden" style="min-height: 55vw; max-height: 100vh;">
+    {% for image in product.images %}
+      {% render 'image',
+        class: 'product-image absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300',
+        image: image,
+        width: 1400
+      %}
+      {% break %}
+    {% endfor %}
+    {% if product.images.size == 0 %}
+      <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
+        <span class="text-gray-400 text-sm">No image</span>
+      </div>
+    {% endif %}
+  </div>
+
+  {%- comment -%} ══ RIGHT — Product Info + Form ══ {%- endcomment -%}
+  <div
+    class="
+      xs:px-4 xs:py-10 md:p-10 w-full lg:w-1/2 lg:h-full flex flex-col
+      border-t border-black-primary lg:border-t-0 lg:border-l lg:border-black-primary
+      overflow-y-auto
+    "
+  >
+    {%- comment -%} ── Breadcrumbs ── {%- endcomment -%}
+    <div class="flex items-center gap-2 text-xs md:text-sm flex-wrap shrink-0 mb-6 ">
+      {% if product.collections.first != blank %}
+        <a
+          href="{{ product.collections.first.url }}"
+          class="hover:opacity-60 poppins-medium transition-opacity text-black-primary duration-200 uppercase tracking-wide"
+        >
+          {{ product.collections.first.title }}
+        </a>
+        <span>/</span>
+      {% endif %}
+      <span class="uppercase tracking-wide text-black-secondary"> {{ product.title }}</span>
+    </div>
+
+    {%- comment -%} ── Title + Price ── {%- endcomment -%}
+    <div class="product-info shrink-0 flex flex-col gap-4">
+      <h1 class="text-[1.625rem] md:text-[2.375rem] poppins-medium text-black-primary leading-[120%]">
+        {{ product.title }} &mdash; {{ product.price | money }}
+      </h1>
+      {% if product.description != blank %}
+        <div class="text-base text-black-secondary leading-[140%]">
+          {{ product.description }}
+        </div>
+      {% endif %}
+    </div>
+
+    {%- comment -%} ══ Product Form ══ {%- endcomment -%}
+    <div class="product-form flex flex-col flex-1">
+      {% form 'product', product, id: 'product-form', data-product-form: '' %}
+        {% assign current_variant = product.selected_or_first_available_variant %}
+
+        {%- comment -%} ── Variants — hidden select (drives logic) ── {%- endcomment -%}
+        <select name="id" id="product-variant-id" class="hidden" aria-label="Variant">
+          {% for variant in product.variants %}
+            <option
+              value="{{ variant.id }}"
+              {% if variant == current_variant %}
+                selected="selected"
+              {% endif %}
+              data-available="{{ variant.available }}"
+              data-image="{{ variant.featured_image.src | default: '' }}"
+            >
+              {{ variant.title }} - {{ variant.price | money }}
+            </option>
+          {% endfor %}
+        </select>
+
+        {%- comment -%} ── Variant option buttons (visible UI) ── {%- endcomment -%}
+        {% unless product.has_only_default_variant %}
+          <div class="border-b border-black-primary shrink-0 mt-6">
+            {% for option in product.options_with_values %}
+              <div class="mb-4 last:mb-0">
+                <p class="text-xs poppins-medium text-black-primary uppercase tracking-widest mb-2">
+                  {{ option.name }}
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  {% for value in option.values %}
+                    <button
+                      type="button"
+                      class="variant-btn px-4 py-2 text-xs border border-black-primary text-black-primary poppins-medium hover:bg-black-primary hover:text-white transition-colors duration-200"
+                      data-option-position="{{ option.position }}"
+                      data-option-value="{{ value }}"
+                    >
+                      {{ value }}
+                    </button>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endunless %}
+
+        {%- comment -%} ── Quantity ── {%- endcomment -%}
+        <div class="shrink-0 mt-6 flex flex-col md:flex-row items-start md:items-center gap-4">
+          <p class="text-lg poppins-medium text-black-primary tracking-normal">Quantity</p>
+          <div class="flex justify-between items-center border border-black-primary w-full md:w-fit">
+            <button
+              type="button"
+              id="qty-minus"
+              class="w-10 h-10 flex items-center justify-center text-black-primary hover:bg-gray-100 transition-colors duration-200 text-xl leading-none cursor-pointer border-r border-black-primary"
+              aria-label="Decrease quantity"
+            >
+              &minus;
+            </button>
+            <input
+              type="number"
+              name="quantity"
+              id="product-qty"
+              value="1"
+              min="1"
+              class="
+                w-12 h-10 text-center text-base poppins-medium text-black-primary bg-white outline-none
+                     [appearance:textfield]
+                [&::-webkit-inner-spin-button]:appearance-none
+                [&::-webkit-outer-spin-button]:appearance-none
+              "
+              aria-label="Quantity"
+            >
+            <button
+              type="button"
+              id="qty-plus"
+              class="w-10 h-10 flex items-center justify-center text-black-primary hover:bg-gray-100 transition-colors duration-200 text-xl leading-none cursor-pointer border-l border-black-primary"
+              aria-label="Increase quantity"
+            >
+              &plus;
+            </button>
+          </div>
+        </div>
+
+        {%- comment -%} ── Add to Basket — sticky bottom ── {%- endcomment -%}
+        <div class="mt-10 shrink-0">
+          <button
+            type="submit"
+            id="add-to-cart-btn"
+            class="
+              w-full cursor-pointer bg-black-primary text-white poppins-medium tracking-normal uppercase px-6 py-4 text-sm md:text-base
+              hover:opacity-80 transition-opacity duration-200
+              disabled:opacity-40 disabled:cursor-not-allowed
+            "
+            {% unless current_variant.available %}
+              disabled
+            {% endunless %}
+          >
+            {% if current_variant.available %}
+              Add to Basket
+            {% else %}
+              Sold Out
+            {% endif %}
+          </button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // ── Quantity stepper ──
+    const qtyInput = document.getElementById('product-qty');
+    const minusBtn = document.getElementById('qty-minus');
+    const plusBtn = document.getElementById('qty-plus');
+
+    if (qtyInput && minusBtn && plusBtn) {
+      minusBtn.addEventListener('click', function () {
+        const v = parseInt(qtyInput.value, 10) || 1;
+        qtyInput.value = v > 1 ? v - 1 : 1;
+      });
+
+      plusBtn.addEventListener('click', function () {
+        const v = parseInt(qtyInput.value, 10) || 1;
+        qtyInput.value = v + 1;
+      });
+    }
+
+    // ── Variant buttons ──
+    const variantSelect = document.getElementById('product-variant-id');
+    const addBtn = document.getElementById('add-to-cart-btn');
+    const mainImage = document.querySelector('.product-image');
+    const variantBtns = document.querySelectorAll('.variant-btn');
+
+    variantBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document
+          .querySelectorAll('.variant-btn[data-option-position="' + this.dataset.optionPosition + '"]')
+          .forEach(function (b) {
+            b.classList.remove('bg-black-primary', 'text-white');
+          });
+        this.classList.add('bg-black-primary', 'text-white');
+
+        const selectedValues = {};
+        document.querySelectorAll('.variant-btn.bg-black-primary').forEach(function (b) {
+          selectedValues[b.dataset.optionPosition] = b.dataset.optionValue;
+        });
+
+        Array.from(variantSelect.options).forEach(function (opt) {
+          const titleParts = opt.text.split(' - ')[0].trim().split(' / ');
+          const matches = Object.entries(selectedValues).every(function (entry) {
+            return titleParts[parseInt(entry[0], 10) - 1] === entry[1];
+          });
+          if (matches) {
+            variantSelect.value = opt.value;
+            const available = opt.dataset.available === 'true';
+            if (addBtn) {
+              addBtn.disabled = !available;
+              addBtn.textContent = available ? 'Add to Basket' : 'Sold Out';
+            }
+            if (mainImage && opt.dataset.image) {
+              mainImage.src = opt.dataset.image;
+            }
+          }
+        });
+      });
+    });
+
+    // ── Money formatter ──
+    function formatMoney(cents) {
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    // ── Re-render cart drawer items ──
+    function refreshCartDrawer(cart) {
+      // Update count badges
+      document.querySelectorAll('[data-cart-count]').forEach(function (el) {
+        el.textContent = cart.item_count;
+        el.style.display = cart.item_count === 0 ? 'none' : '';
+      });
+
+      // Update subtotal
+      var subtotalEl = document.getElementById('cart-subtotal');
+      if (subtotalEl) {
+        subtotalEl.textContent = formatMoney(cart.total_price);
+      }
+
+      // Re-render items list
+      var itemsContainer = document.getElementById('cart-items');
+      if (!itemsContainer) return;
+
+      if (cart.items.length === 0) {
+        itemsContainer.innerHTML =
+          '<div class="px-5 py-12 text-center text-sm text-black-secondary">Your cart is empty</div>';
+        return;
+      }
+
+      itemsContainer.innerHTML = cart.items
+        .map(function (item) {
+          var imageHtml = item.featured_image
+            ? '<img src="' +
+              item.featured_image.url +
+              '" alt="' +
+              item.title +
+              '" width="300" height="300" loading="lazy" class="w-full h-full object-cover">'
+            : '';
+
+          var variantHtml =
+            item.variant_title && item.variant_title !== 'Default Title'
+              ? '<p class="text-xs text-black-secondary">' + item.variant_title + '</p>'
+              : '';
+
+          return [
+            '<div class="flex flex-col md:flex-row gap-4 relative" data-key="' + item.key + '">',
+            '<a href="' + item.url + '" class="shrink-0 w-fit">',
+            '<div class="w-28 md:w-36 aspect-square border border-black-primary overflow-hidden bg-white">',
+            imageHtml,
+            '</div>',
+            '</a>',
+            '<div class="flex flex-col justify-center gap-2 flex-1 w-fit">',
+            '<a href="' +
+              item.url +
+              '" class="text-lg poppins-medium text-black-primary hover:opacity-70 transition-opacity duration-200 leading-snug">',
+            item.product_title,
+            '</a>',
+            variantHtml,
+            '<p class="text-base text-black-primary">Quantity (' + item.quantity + ')</p>',
+            '<p class="text-lg poppins-medium text-black-primary">' + formatMoney(item.final_line_price) + '</p>',
+            '</div>',
+            '<button class="cart-remove poppins-semibold absolute right-0 bottom-6 text-sm lg:text-lg text-gray-400 hover:text-black-primary transition-colors cursor-pointer duration-200"',
+            ' data-key="' + item.key + '" aria-label="Remove ' + item.product_title + '">',
+            'Remove',
+            '</button>',
+            '</div>',
+          ].join('');
+        })
+        .join('');
+    }
+
+    // ── AJAX Add to cart ──
+    var form = document.getElementById('product-form');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        if (addBtn) {
+          addBtn.disabled = true;
+          addBtn.textContent = 'Adding...';
+        }
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          body: new FormData(form),
+        })
+          .then(function (r) {
+            if (!r.ok) throw new Error('Failed to add to cart');
+            return r.json();
+          })
+          .then(function () {
+            if (addBtn) {
+              addBtn.disabled = false;
+              addBtn.textContent = 'Add to Basket';
+            }
+
+            // Open cart drawer immediately
+            document.dispatchEvent(new Event('cart:open'));
+
+            // Fetch updated cart and refresh drawer
+            return fetch('/cart.js');
+          })
+          .then(function (r) {
+            return r.json();
+          })
+          .then(function (cart) {
+            refreshCartDrawer(cart);
+          })
+          .catch(function () {
+            if (addBtn) {
+              addBtn.disabled = false;
+              addBtn.textContent = 'Add to Basket';
+            }
+          });
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "t:general.product",
+  "settings": [],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}
