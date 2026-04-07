@@ -60,6 +60,14 @@
           <strong class="poppins-semibold text-black-primary"> {{ section.settings.tagline_bold }}</strong>
         {%- endif -%}
       </p>
+      {% if section.settings.show_btn %}
+        <a
+          href="{{ section.settings.button_link }}"
+          class="mt-10 text-center bg-black-primary text-white text-xs md:text-base poppins-medium tracking-wide uppercase px-6 py-4 hover:opacity-90 w-fit self-center lg:self-start"
+        >
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
     </div>
 
     {%- comment -%} ══ CATEGORIES — basis-1/2 desktop, 2-col grid ══ {%- endcomment -%}
@@ -97,12 +105,11 @@
         {% endif %}
       >
         {%- if img1 != blank -%}
-          
-          {{ img1 | image_url: width: 400 | image_tag:
-    loading: 'lazy',
-    widths: '200, 400, 600, 800',
-    sizes: '(max-width: 640px) 100vw, 337px'
-}}
+          {{
+            img1
+            | image_url: width: 400
+            | image_tag: loading: 'lazy', widths: '200, 400, 600, 800', sizes: '(max-width: 640px) 100vw, 337px'
+          }}
         {%- else -%}
           <div class="w-full h-full bg-gray-100 flex items-center justify-center">
             <span class="text-gray-400 text-xs">Upload image</span>
@@ -122,11 +129,11 @@
         {% endif %}
       >
         {%- if img2 != blank -%}
-          {{ img2 | image_url: width: 400 | image_tag:
-    loading: 'lazy',
-    widths: '200, 400, 600, 800',
-    sizes: '(max-width: 640px) 100vw, 337px'
-}}
+          {{
+            img2
+            | image_url: width: 400
+            | image_tag: loading: 'lazy', widths: '200, 400, 600, 800', sizes: '(max-width: 640px) 100vw, 337px'
+          }}
         {%- else -%}
           <div class="w-full h-full flex items-center justify-center">
             <span class="text-gray-400 text-xs">Upload image</span>
@@ -169,7 +176,7 @@
           border-r border-black-primary
         "
       >
-        <h2 class="text-xl md:text-2xl lg:text-3xl poppins-bold text-black-primary leading-tight">
+        <h2 class="text-[1.625rem] md:text-[2.375rem] poppins-medium text-black-primary leading-[120%]">
           {%- if col3 != blank -%}{{ col3.title }}{%- else -%}Live Plants{%- endif -%}
         </h2>
         <a
@@ -197,11 +204,11 @@
         {% endif %}
       >
         {%- if img3 != blank -%}
-          {{ img3 | image_url: width: 400 | image_tag:
-    loading: 'lazy',
-    widths: '200, 400, 600, 800',
-    sizes: '(max-width: 640px) 100vw, 337px'
-}}
+          {{
+            img3
+            | image_url: width: 400
+            | image_tag: loading: 'lazy', widths: '200, 400, 600, 800', sizes: '(max-width: 640px) 100vw, 337px'
+          }}
         {%- else -%}
           <div class="w-full h-full bg-gray-100 flex items-center justify-center">
             <span class="text-gray-400 text-xs">Upload image</span>
@@ -242,9 +249,26 @@
       "default": "Online Flower Delivery Service"
     },
     {
+      "type": "checkbox",
+      "id": "show_btn",
+      "label": "Show hero button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "View products"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
       "type": "text",
       "id": "cta_label",
-      "label": "Shop Now Label",
+      "label": "Product CTA label",
       "default": "Shop now"
     },
     {
