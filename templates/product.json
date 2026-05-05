@@ -12,9 +12,17 @@
     "main": {
       "type": "product",
       "settings": {}
+    },
+    "related_products_MXkTAx": {
+      "type": "related-products",
+      "name": "You May Also Like",
+      "settings": {
+        "heading": "You may also like"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "related_products_MXkTAx"
   ]
 }

@@ -1,0 +1,216 @@
+<section class="bg-white py-10 md:py-20 md:px-10">
+  <div class="max-w-4xl mx-auto px-6 py-10 md:p-10 lg:p-20 border border-black-primary">
+    {%- comment -%} ── Heading ── {%- endcomment -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="text-[2.125rem] md:text-[3.125rem] poppins-semibold text-black-primary text-center mb-6 md:mb-10">
+        {{ section.settings.heading }}
+      </h2>
+    {%- endif -%}
+
+    {%- comment -%} ── FAQ Items ── {%- endcomment -%}
+    <div class="flex flex-col " id="faq-list">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq_item' -%}
+          <div
+            class="faq-item border-b border-black-primary"
+            {{ block.shopify_attributes }}
+          >
+            {%- comment -%} Question row ── {%- endcomment -%}
+            <button
+              type="button"
+              class="
+                faq-trigger w-full flex items-center justify-between gap-4
+                text-left px-0 py-5 md:py-6
+                text-base md:text-[1.313rem] lg:text-[1.75rem] text-black-primary
+                cursor-pointer
+              "
+              aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+            >
+              <span>{{ block.settings.question }}</span>
+
+              {%- comment -%} Arrow icon — rotates when open ── {%- endcomment -%}
+              <span
+                class="
+                  faq-icon shrink-0 transition-transform duration-300
+                  {% if forloop.first %}rotate-45{% endif %}
+                "
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                >
+                  <line x1="7" y1="0" x2="7" y2="14"/>
+                  <line x1="0" y1="7" x2="14" y2="7"/>
+                </svg>
+              </span>
+            </button>
+
+            {%- comment -%} Answer panel ── {%- endcomment -%}
+            <div
+              class="faq-panel overflow-hidden transition-all duration-300 ease-in-out"
+              style="{% if forloop.first %}max-height: 500px;{% else %}max-height: 0;{% endif %}"
+            >
+              {%- if block.settings.answer != blank -%}
+                <div class="text-base text-black-secondary leading-[140%] pb-6 faq-richtext">
+                  {{ block.settings.answer }}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-richtext p {
+    margin-bottom: 0.5rem;
+  }
+  .faq-richtext p:last-child {
+    margin-bottom: 0;
+  }
+  .faq-richtext strong {
+    font-weight: 700;
+    color: #111;
+  }
+  .faq-richtext ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+  .faq-richtext li {
+    margin-bottom: 0.25rem;
+  }
+  .faq-richtext a {
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var triggers = document.querySelectorAll('.faq-trigger');
+
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener('click', function () {
+        var item = this.closest('.faq-item');
+        var panel = item.querySelector('.faq-panel');
+        var icon = item.querySelector('.faq-icon');
+        var isOpen = this.getAttribute('aria-expanded') === 'true';
+
+        if (isOpen) {
+          // Close
+          panel.style.maxHeight = '0';
+          icon.classList.remove('rotate-45');
+          this.setAttribute('aria-expanded', 'false');
+        } else {
+          // Close all others first
+          triggers.forEach(function (other) {
+            if (other !== trigger) {
+              var otherItem = other.closest('.faq-item');
+              var otherPanel = otherItem.querySelector('.faq-panel');
+              var otherIcon = otherItem.querySelector('.faq-icon');
+              otherPanel.style.maxHeight = '0';
+              otherIcon.classList.remove('rotate-45');
+              other.setAttribute('aria-expanded', 'false');
+            }
+          });
+
+          // Open this one
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+          icon.classList.add('rotate-45');
+          this.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Subscription FAQ",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Subscription FAQ"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How often will I get a new bouquet?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Our subscriptions allow you to select a delivery frequency that best suits your needs — either weekly, bi-weekly, or monthly. You can also choose the number of deliveries for your subscription. Choose any combination that works for you.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Subscription FAQ",
+      "category": "Subscription",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How often will I get a new bouquet?",
+            "answer": "<p>Our subscriptions allow you to select a delivery frequency that best suits your needs — either weekly, bi-weekly, or monthly. You can also choose the number of deliveries for your subscription. Choose any combination that works for you.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I send a subscription like as a gift?",
+            "answer": "<p>Yes! You can send a flower subscription as a gift to someone special. Simply provide us with their address and we'll take care of the rest, delivering beautiful blooms straight to their doorstep at the frequency and duration of your choosing.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I choose which bouquet I get?",
+            "answer": "<p>When subscribing, you can choose from our three plan designs: Classic, Seasonal, and Deluxe. Each plan has a distinct style. The specific flowers in each bouquet will vary based on seasonal availability to ensure the freshest blooms.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I change the shipping address?",
+            "answer": "<p>Yes, you can update your shipping address at any time by logging into your account dashboard. Changes will be applied to your next scheduled delivery.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What day will the subscription bouquet come?",
+            "answer": "<p>We typically deliver on weekdays. You will receive a notification email the day before your delivery with a more specific delivery window. Exact delivery days may vary slightly depending on your location.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I suspend my subscription to flowers?",
+            "answer": "<p>Yes, you can pause or cancel your subscription at any time by logging into your account dashboard. You are in complete control of your flower delivery experience.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

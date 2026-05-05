@@ -1,0 +1,123 @@
+<section class="bg-white border-b border-black-primary">
+  <div class="flex flex-col lg:flex-row">
+    {%- comment -%} ══ LEFT — Section Heading ══ {%- endcomment -%}
+    <div
+      class="
+        w-full lg:w-1/2 flex
+        px-4 py-10 md:px-14 md:p-20
+        border-b border-black-primary lg:border-b-0 lg:border-r lg:border-black-primary
+      "
+    >
+      {%- if section.settings.heading != blank -%}
+        <h2 class="text-[2.125rem] md:text-[3.125rem] poppins-semibold text-black-primary leading-[120%]">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ══ RIGHT — Steps ══ {%- endcomment -%}
+    <div class="w-full lg:w-1/2 flex flex-col divide-y divide-black-primary">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'step' -%}
+          <div class="px-4 py-10 md:p-20" {{ block.shopify_attributes }}>
+            {%- if block.settings.step_heading != blank -%}
+              <h3 class="text-[1.625rem] md:text-[2.375rem] poppins-medium text-black-primary leading-tight mb-4">
+                {{ block.settings.step_heading }}
+              </h3>
+            {%- endif -%}
+
+            {%- if block.settings.step_content != blank -%}
+              <div class="text-base text-black-secondary leading-[140%] how-richtext">
+                {{ block.settings.step_content }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .how-richtext p {
+    margin-bottom: 0.5rem;
+  }
+  .how-richtext p:last-child {
+    margin-bottom: 0;
+  }
+  .how-richtext strong {
+    font-weight: 700;
+    color: #111;
+  }
+  .how-richtext ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+  .how-richtext li {
+    margin-bottom: 0.25rem;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "How Does It Work",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "How does it work?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_heading",
+          "label": "Step Heading",
+          "default": "Choose a plan"
+        },
+        {
+          "type": "richtext",
+          "id": "step_content",
+          "label": "Step Description",
+          "default": "<p>Select the subscription plan that suits you best from our three bouquet designs: classic, seasonal, and deluxe. Each plan comes with a designer vase, free delivery, and a discount of up to 33%. Our seasonal and deluxe plans also include a luxurious scented candle to enhance the ambiance.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How Does It Work",
+      "category": "Subscription",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "step_heading": "Choose a plan",
+            "step_content": "<p>Select the subscription plan that suits you best from our three bouquet designs: classic, seasonal, and deluxe. Each plan comes with a designer vase, free delivery, and a discount of up to 33%. Our seasonal and deluxe plans also include a luxurious scented candle to enhance the ambiance.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_heading": "Frequency and Duration",
+            "step_content": "<p>Choose a delivery frequency: once a week, every two weeks, or once a month. Then, select your subscription duration from 3 to 12 months. Enjoy savings with a longer subscription. We understand that every customer has different needs, and we aim to provide flexible subscription options that cater to your specific preferences.</p>"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_heading": "Pay once",
+            "step_content": "<p>After entering your contact and delivery information and paying for your subscription, you can sit back and relax, knowing that you have secured a regular supply of fresh, stunning flowers for yourself or your loved ones.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

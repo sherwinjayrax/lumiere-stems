@@ -1,0 +1,97 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {}
+    },
+    "our_story_XqbAd7": {
+      "type": "our-story",
+      "name": "Our Story Hero",
+      "settings": {
+        "eyebrow": "Our Story",
+        "brand_name": "Lumière Stems",
+        "description": "Discover Uniquely Crafted Bouquets and Gifts for Any Occasion: Spread Joy with Our",
+        "description_bold": "Online Flower Delivery Service",
+        "story_image": "shopify://shop_images/store-owner.webp",
+        "image_position": "object-center",
+        "instagram_url": "http://instagram.com/",
+        "pinterest_url": "http://pinterest.com/",
+        "facebook_url": "http://facebook.com/",
+        "twitter_url": "http://x.com/",
+        "telegram_url": "https://web.telegram.org/"
+      }
+    },
+    "our_story_content_UKDKWy": {
+      "type": "our-story-content",
+      "blocks": {
+        "story_block_qHE47W": {
+          "type": "story_block",
+          "settings": {
+            "image": "shopify://shop_images/block-image-1.webp",
+            "image_position": "object-center",
+            "image_placement": "left",
+            "block_heading": "Expertly Crafted Bouquets",
+            "block_text": "<p>At Lumière Stems, we take pride in our team of talented and experienced florists who carefully select each bloom, ensuring that only the freshest and most stunning flowers make it into our bouquets. We work directly with farms to source the highest quality flowers, and our skilled florists expertly craft each bouquet to perfection.</p>"
+          }
+        },
+        "story_block_njxciq": {
+          "type": "story_block",
+          "settings": {
+            "image": "shopify://shop_images/block-image-2.webp",
+            "image_position": "object-center",
+            "image_placement": "right",
+            "block_heading": "Bouquets, Gifts & Ambiance",
+            "block_text": "<p>In addition to our stunning bouquets, we also offer a collection of dried bouquets, house plants, and fragrant candles from luxury brands to create the perfect ambiance. We believe that sending flowers, plants, and gifts should be easy and stress-free, which is why we offer same or next-day delivery throughout Kyiv.<br/><br/></p>"
+          }
+        },
+        "story_block_bdkz9R": {
+          "type": "story_block",
+          "settings": {
+            "image": "shopify://shop_images/block-image-3.webp",
+            "image_position": "object-center",
+            "image_placement": "left",
+            "block_heading": "Making Every Day Special",
+            "block_text": "<p>Our mission is simple: to make every day special and memorable for our customers. We are dedicated to providing the highest quality flowers, exceptional customer service, and a seamless online experience that will make you feel confident and satisfied with your purchase.Thank you for choosing Kyiv LuxeBouquets. We look forward to bringing joy and happiness to your life with our beautiful bouquets and gifts.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "story_block_qHE47W",
+        "story_block_njxciq",
+        "story_block_bdkz9R"
+      ],
+      "name": "Our Story Content",
+      "settings": {
+        "eyebrow": "Our Story",
+        "heading": "Our Founder's Passion",
+        "intro_text": "<p>Lumière Stems was founded in 2010 by John Doe with the goal of bringing unique and exquisite bouquets to the people of London. John has always had a passion for flowers and design, and his vision was to create a local floral studio that would specialize in the creation and delivery of fresh, beautiful, and distinctive bouquets.</p>"
+      }
+    },
+    "discover_Dy9ReD": {
+      "type": "discover",
+      "name": "Discover",
+      "settings": {
+        "heading": "Discover Our Beautiful Bouquets",
+        "subtext": "Explore our collection of exquisite bouquets and surprise your loved ones with the perfect gift. Click the button below to start shopping",
+        "button_label": "Shop Now",
+        "button_url": "shopify://collections"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "our_story_XqbAd7",
+    "our_story_content_UKDKWy",
+    "discover_Dy9ReD"
+  ]
+}

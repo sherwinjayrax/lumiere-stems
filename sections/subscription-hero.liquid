@@ -1,0 +1,224 @@
+{% comment %}
+  Subscription Hero Section
+  Desktop: 50/50 flex — image left, content right
+  Tablet/Mobile: stacked — image top, content bottom
+{% endcomment %}
+
+{%- liquid
+  assign img_pos = section.settings.image_position | default: 'object-center'
+-%}
+
+<section class="bg-white border-b border-black-primary">
+  <div class="flex flex-col lg:flex-row min-h-[60vh] lg:min-h-screen">
+    {%- comment -%} ══ LEFT — Image ══ {%- endcomment -%}
+    <div
+      class="relative w-full lg:w-1/2 overflow-hidden border-b border-black-primary lg:border-b-0 lg:border-r lg:border-black-primary"
+      style="min-height: 55vw;"
+    >
+      {%- if section.settings.hero_image != blank -%}
+        {%- assign hero_alt = section.settings.hero_image.alt | escape | default: section.settings.heading -%}
+        {%- assign hero_class = 'absolute inset-0 w-full h-full object-cover ' | append: img_pos -%}
+        <div class="absolute inset-0">
+          {{
+            section.settings.hero_image
+            | image_url: width: 1400
+            | image_tag:
+              alt: hero_alt,
+              loading: 'eager',
+              class: hero_class,
+              widths: '400, 600, 800, 1000, 1200, 1400',
+              sizes: '(max-width: 1024px) 100vw, 50vw'
+          }}
+        </div>
+      {%- else -%}
+        <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
+          <span class="text-gray-400 text-sm">Upload a hero image</span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ══ RIGHT — Content ══ {%- endcomment -%}
+    <div
+      class="
+        w-full lg:w-1/2 flex flex-col justify-center
+        px-4 py-10 md:px-14 md:p-20
+      "
+    >
+      {%- comment -%} Heading {%- endcomment -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="text-[2.125rem] lg:text-[3.125rem] poppins-semibold text-black-primary leading-[120%] mb-8">
+          {{ section.settings.heading }}
+        </h1>
+      {%- endif -%}
+
+      {%- comment -%} Richtext groups (blocks) {%- endcomment -%}
+      <div class="flex flex-col gap-6 mb-10">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'richtext_group' -%}
+            <div {{ block.shopify_attributes }}>
+              {%- if block.settings.group_label != blank -%}
+                <p class="text-base poppins-medium text-black-primary mb-2">
+                  {{ block.settings.group_label }}
+                </p>
+              {%- endif -%}
+              {%- if block.settings.group_content != blank -%}
+                <div class="text-base text-black-secondary leading-[140%] subscription-richtext">
+                  {{ block.settings.group_content }}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} CTA Button {%- endcomment -%}
+      {%- if section.settings.button_label != blank -%}
+        <div class="flex self-stretch lg:self-start">
+          <a
+            href="{{ section.settings.button_url | default: '#' }}"
+            class="
+              inline-flex items-center justify-center basis-full
+              border border-black-primary
+              text-sm md:text-base poppins-medium text-black-primary tracking-normal uppercase
+              px-6 py-4
+              hover:bg-black-primary hover:text-white
+              transition-colors duration-200
+            "
+          >
+            {{ section.settings.button_label }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .subscription-richtext ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+  .subscription-richtext li {
+    margin-bottom: 0.25rem;
+  }
+  .subscription-richtext p {
+    margin-bottom: 0.5rem;
+  }
+  .subscription-richtext p:last-child {
+    margin-bottom: 0;
+  }
+  .subscription-richtext strong {
+    font-weight: 700;
+    color: #111;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Subscription Hero",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        { "value": "object-center", "label": "Center" },
+        { "value": "object-top", "label": "Top" },
+        { "value": "object-bottom", "label": "Bottom" },
+        { "value": "object-left", "label": "Left" },
+        { "value": "object-right", "label": "Right" },
+        { "value": "object-left-top", "label": "Left Top" },
+        { "value": "object-right-top", "label": "Right Top" },
+        { "value": "object-left-bottom", "label": "Left Bottom" },
+        { "value": "object-right-bottom", "label": "Right Bottom" }
+      ],
+      "default": "object-center"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Flower Subscription"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Explore Plans"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "richtext_group",
+      "name": "Content Group",
+      "settings": [
+        {
+          "type": "text",
+          "id": "group_label",
+          "label": "Group Label",
+          "info": "e.g. 'For Yourself', 'As a Gift', 'For Business'",
+          "default": "For Yourself"
+        },
+        {
+          "type": "richtext",
+          "id": "group_content",
+          "label": "Group Content",
+          "default": "<ul><li>The perfect way to keep your home fresh and beautiful.</li><li>Get a regular delivery of stunning bouquets straight to your doorstep without lifting a finger.</li></ul>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Subscription Hero",
+      "category": "Subscription",
+      "blocks": [
+        {
+          "type": "richtext_group",
+          "settings": {
+            "group_label": "For Yourself",
+            "group_content": "<ul><li>The perfect way to keep your home fresh and beautiful. Get a regular delivery of stunning bouquets straight to your doorstep without lifting a finger. Enjoy the beauty and fragrance of fresh flowers, hassle-free!</li></ul>"
+          }
+        },
+        {
+          "type": "richtext_group",
+          "settings": {
+            "group_label": "As a Gift",
+            "group_content": "<ul><li>Simply provide us with their address and let us take care of the rest, delivering beautiful blooms straight to their doorstep at the frequency and duration of your choosing.</li></ul>"
+          }
+        },
+        {
+          "type": "richtext_group",
+          "settings": {
+            "group_label": "For Business",
+            "group_content": "<ul><li>It is a great way to create a pleasant atmosphere and leave a good impression on your guests and customers. Fresh floral arrangements will improve the aesthetic image of your business, and our service guarantees timely replacement without extra care or effort on your part.</li></ul>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

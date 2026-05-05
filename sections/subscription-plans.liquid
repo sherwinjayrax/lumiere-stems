@@ -1,0 +1,491 @@
+{%- liquid
+  assign img_pos = section.settings.image_position | default: 'object-center'
+  assign col_1 = section.settings.plan_collection_1
+  assign col_2 = section.settings.plan_collection_2
+  assign col_3 = section.settings.plan_collection_3
+-%}
+
+<section class="bg-white" id="subscription-order">
+  <div class="flex flex-col lg:flex-row">
+    {%- comment -%} ══ LEFT — Form Column ══ {%- endcomment -%}
+    <div class="w-full lg:w-1/2 px-4 py-10 md:py-20 md:px-10 flex flex-col border-b border-black-primary lg:border-b-0 lg:border-r lg:border-black-primary">
+      {%- comment -%} ── Eyebrow + Heading + Subtext ── {%- endcomment -%}
+      <div class="flex flex-col mb-6">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="text-xs md:text-sm poppins-medium text-black-primary uppercase mb-6">
+            {{ section.settings.eyebrow }}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="text-[1.625rem] md:text-[2.375rem] poppins-medium text-black-primary leading-tight mb-4">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtext != blank -%}
+          <p class="text-base text-black-secondary leading-[140%]">
+            {{ section.settings.subtext }}
+          </p>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ── Plan Cards ── {%- endcomment -%}
+      <div class="flex flex-col gap-4">
+        {%- comment -%}
+          Iterate each collection individually — Liquid does not support
+          arrays of objects, so we handle each one explicitly.
+        {%- endcomment -%}
+
+        {%- for i in (1..3) -%}
+          {%- liquid
+            case i
+              when 1
+                assign col = col_1
+                assign spid_key = 'selling_plan_id_1'
+              when 2
+                assign col = col_2
+                assign spid_key = 'selling_plan_id_2'
+              when 3
+                assign col = col_3
+                assign spid_key = 'selling_plan_id_3'
+            endcase
+
+            assign selling_plan_id = section.settings[spid_key]
+            assign plan_product = col.products.first
+          -%}
+
+          {%- if col == blank -%}{%- continue -%}{%- endif -%}
+
+          <div class="border border-[#D2D2D7]">
+            {%- comment -%} Image + details row {%- endcomment -%}
+            <div class="flex flex-col sm:flex-row">
+              {%- comment -%} Collection image — fallback to first product image {%- endcomment -%}
+              <div
+                class="w-full sm:w-52.5 shrink-0 sm:border-r border-[#D2D2D7] overflow-hidden"
+                style="aspect-ratio: 210 / 155;"
+              >
+                {%- if col.featured_image != blank -%}
+                  {%- liquid
+                    assign col_img_alt = col.featured_image.alt | escape | default: col.title
+                    assign col_img_class = 'w-full h-full object-cover'
+                  -%}
+                  {{
+                    col.featured_image
+                    | image_url: width: 420
+                    | image_tag:
+                      alt: col_img_alt,
+                      loading: 'lazy',
+                      class: col_img_class,
+                      widths: '210, 300, 420',
+                      sizes: '210px'
+                  }}
+                {%- elsif plan_product != blank and plan_product.featured_image != blank -%}
+                  {%- liquid
+                    assign prod_img_alt = plan_product.featured_image.alt | escape | default: col.title
+                    assign prod_img_class = 'w-full h-full object-cover'
+                  -%}
+                  {{
+                    plan_product.featured_image
+                    | image_url: width: 420
+                    | image_tag:
+                      alt: prod_img_alt,
+                      loading: 'lazy',
+                      class: prod_img_class,
+                      widths: '210, 300, 420',
+                      sizes: '210px'
+                  }}
+                {%- else -%}
+                  <div class="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <span class="text-gray-400 text-xs">No image</span>
+                  </div>
+                {%- endif -%}
+              </div>
+
+              {%- comment -%} Plan name + features {%- endcomment -%}
+              <div class="flex-1 flex flex-col gap-4 p-4">
+                <p class="text-lg poppins-medium text-black-primary">
+                  {{ col.title }}
+                </p>
+                <ul class="list-disc pl-4 text-base text-black-primary leading-relaxed">
+                  {{ col.description }}
+                </ul>
+              </div>
+            </div>
+
+            {%- comment -%} SELECT button {%- endcomment -%}
+            {%- liquid
+              assign btn_variant_id = ''
+              if plan_product != blank
+                assign btn_variant_id = plan_product.selected_or_first_available_variant.id
+              endif
+            -%}
+            <button
+              type="button"
+              class="
+                plan-select-btn w-full cursor-pointer bg-black-primary text-white
+                text-sm md:text-base poppins-medium uppercase
+                py-4 hover:opacity-80 transition-opacity duration-200
+              "
+              data-plan-name="{{ col.title | escape }}"
+              data-collection-handle="{{ col.handle }}"
+              data-variant-id="{{ btn_variant_id }}"
+              data-selling-plan-id="{{ selling_plan_id }}"
+            >
+              {{ section.settings.select_label | default: 'Select' }}
+            </button>
+          </div>
+        {%- endfor -%}
+      </div>
+      <hr class="my-10 border-0 h-px bg-[#d7d7d7]">
+      {%- comment -%} ── Frequency ── {%- endcomment -%}
+      <div class="flex flex-col">
+        {%- if section.settings.frequency_heading != blank -%}
+          <h3 class="text-[1.375rem] md:text-[1.75rem] text-black-primary mb-4">
+            {{ section.settings.frequency_heading }}
+          </h3>
+        {%- endif -%}
+        {%- if section.settings.frequency_subtext != blank -%}
+          <p class="text-base text-black-secondary mb-6">
+            {{ section.settings.frequency_subtext }}
+          </p>
+        {%- endif -%}
+        <div class="flex flex-col sm:flex-row gap-4">
+          {%- assign freq_options = section.settings.frequency_options | split: ',' -%}
+          {%- for freq in freq_options -%}
+            {%- assign freq_label = freq | strip -%}
+            <button
+              type="button"
+              class="
+                frequency-btn border border-black-primary basis-full
+                text-xs poppins-medium uppercase tracking-[0.15em]
+                px-6 py-3 transition-colors duration-200
+                {% if forloop.first %}bg-black-primary text-white{% else %}text-black-primary hover:bg-black-primary hover:text-white{% endif %}
+              "
+              data-frequency="{{ freq_label }}"
+            >
+              {{ freq_label }}
+            </button>
+          {%- endfor -%}
+        </div>
+      </div>
+      <hr class="my-10 border-0 h-px bg-[#d7d7d7]">
+      {%- comment -%} ── Quantity ── {%- endcomment -%}
+      <div class="flex flex-col">
+        {%- if section.settings.quantity_heading != blank -%}
+          <h3 class="text-xl md:text-2xl poppins-bold text-black-primary mb-2">
+            {{ section.settings.quantity_heading }}
+          </h3>
+        {%- endif -%}
+        {%- if section.settings.quantity_subtext != blank -%}
+          <p class="text-xs text-black-secondary mb-6">
+            {{ section.settings.quantity_subtext }}
+          </p>
+        {%- endif -%}
+        <div class="flex items-center self-stretch md:self-start border border-black-primary md:w-fit">
+          <button
+            type="button"
+            id="sub-qty-minus"
+            class="
+              w-16 cursor-pointer h-10 flex items-center justify-center text-xl leading-none
+              text-black-primary border-r border-black-primary
+              hover:bg-gray-100 transition-colors duration-200
+            "
+            aria-label="Decrease"
+          >
+            &minus;
+          </button>
+          <input
+            type="number"
+            id="sub-qty-input"
+            value="1"
+            min="1"
+            class="
+              w-12 h-10 text-center text-sm poppins-medium text-black-primary
+              bg-white outline-none basis-full
+              [appearance:textfield]
+              [&::-webkit-inner-spin-button]:appearance-none
+              [&::-webkit-outer-spin-button]:appearance-none
+            "
+            aria-label="Number of deliveries"
+          >
+          <button
+            type="button"
+            id="sub-qty-plus"
+            class="
+              w-16 cursor-pointer h-10 flex items-center justify-center text-xl leading-none
+              text-black-primary border-l border-black-primary
+              hover:bg-gray-100 transition-colors duration-200
+            "
+            aria-label="Increase"
+          >
+            &plus;
+          </button>
+        </div>
+      </div>
+      <hr class="my-10 border-0 h-px bg-[#d7d7d7]">
+      {%- comment -%} ── Checkout ── {%- endcomment -%}
+      <div class="flex">
+        <a
+          href="/checkout"
+          id="subscription-checkout-btn"
+          class="
+            flex items-center justify-center w-full
+            bg-black-primary text-white
+            text-sm md:text-base poppins-medium uppercase
+            px-6 py-4 hover:opacity-80 transition-opacity duration-200
+          "
+        >
+          {{ section.settings.checkout_label | default: 'Checkout' }}
+        </a>
+      </div>
+    </div>
+
+    {%- comment -%} ══ RIGHT — Sticky Image (desktop only) ══ {%- endcomment -%}
+    <div
+      class="hidden lg:flex w-full lg:w-1/2 "
+    >
+      {%- if section.settings.side_image != blank -%}
+        {%- liquid
+          assign side_alt = section.settings.side_image.alt | escape | default: 'Subscription'
+          assign side_class = 'w-full h-full object-cover' | append: img_pos
+        -%}
+        <div class="flex h-screen border-b border-black-primary">
+          {{
+            section.settings.side_image
+            | image_url: width: 1200
+            | image_tag:
+              alt: side_alt,
+              loading: 'lazy',
+              class: side_class,
+              widths: '400, 600, 800, 1000, 1200',
+              sizes: '50vw'
+          }}
+        </div>
+      {%- else -%}
+        <div class=" bg-gray-100 flex items-center justify-center h-screen border-b border-black-primary w-full">
+          <span class="text-gray-400 text-sm">Upload a side image</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .list-disc > ul {
+    list-style-type: disc;
+  }
+{% endstylesheet %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // ── Quantity stepper ──
+    var qtyInput = document.getElementById('sub-qty-input');
+    var minusBtn = document.getElementById('sub-qty-minus');
+    var plusBtn = document.getElementById('sub-qty-plus');
+
+    if (qtyInput && minusBtn && plusBtn) {
+      minusBtn.addEventListener('click', function () {
+        var v = parseInt(qtyInput.value, 10) || 1;
+        qtyInput.value = v > 1 ? v - 1 : 1;
+      });
+      plusBtn.addEventListener('click', function () {
+        var v = parseInt(qtyInput.value, 10) || 1;
+        qtyInput.value = v + 1;
+      });
+    }
+
+    // ── Frequency toggle ──
+    var freqBtns = document.querySelectorAll('.frequency-btn');
+    freqBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        freqBtns.forEach(function (b) {
+          b.classList.remove('bg-black-primary', 'text-white');
+          b.classList.add('text-black-primary');
+        });
+        this.classList.remove('text-black-primary');
+        this.classList.add('bg-black-primary', 'text-white');
+        window.selectedFrequency = this.dataset.frequency;
+      });
+    });
+
+    // ── Plan SELECT ──
+    var selectBtns = document.querySelectorAll('.plan-select-btn');
+    selectBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        window.selectedPlan = {
+          name: this.dataset.planName,
+          handle: this.dataset.collectionHandle,
+          variantId: this.dataset.variantId,
+          sellingPlanId: this.dataset.sellingPlanId,
+        };
+        document.dispatchEvent(
+          new CustomEvent('plan:selected', {
+            detail: window.selectedPlan,
+          })
+        );
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Selecting a Plan",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "Build your subscription"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Selecting a Plan"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Enjoy free shipping on every order and save up to 30%. Every bouquet we deliver is carefully curated to ensure it arrives fresh and stunning. To modify, pause, or cancel your subscription, simply log in to your account dashboard. You're in complete control of your flower delivery experience."
+    },
+    {
+      "type": "text",
+      "id": "select_label",
+      "label": "Select Button Label",
+      "default": "Select"
+    },
+    {
+      "type": "header",
+      "content": "Plan 1"
+    },
+    {
+      "type": "collection",
+      "id": "plan_collection_1",
+      "label": "Plan 1 Collection"
+    },
+    {
+      "type": "text",
+      "id": "selling_plan_id_1",
+      "label": "Plan 1 Selling Plan ID",
+      "info": "Fill in after setting up Seal Subscriptions"
+    },
+    {
+      "type": "header",
+      "content": "Plan 2"
+    },
+    {
+      "type": "collection",
+      "id": "plan_collection_2",
+      "label": "Plan 2 Collection"
+    },
+    {
+      "type": "text",
+      "id": "selling_plan_id_2",
+      "label": "Plan 2 Selling Plan ID",
+      "info": "Fill in after setting up Seal Subscriptions"
+    },
+    {
+      "type": "header",
+      "content": "Plan 3"
+    },
+    {
+      "type": "collection",
+      "id": "plan_collection_3",
+      "label": "Plan 3 Collection"
+    },
+    {
+      "type": "text",
+      "id": "selling_plan_id_3",
+      "label": "Plan 3 Selling Plan ID",
+      "info": "Fill in after setting up Seal Subscriptions"
+    },
+    {
+      "type": "header",
+      "content": "Frequency"
+    },
+    {
+      "type": "text",
+      "id": "frequency_heading",
+      "label": "Frequency Heading",
+      "default": "How often do you want flowers delivered ?"
+    },
+    {
+      "type": "text",
+      "id": "frequency_subtext",
+      "label": "Frequency Subtext",
+      "default": "Select the delivery frequency"
+    },
+    {
+      "type": "text",
+      "id": "frequency_options",
+      "label": "Frequency Options (comma separated)",
+      "default": "Monthly, Bi-Weekly, Weekly"
+    },
+    {
+      "type": "header",
+      "content": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "quantity_heading",
+      "label": "Quantity Heading",
+      "default": "How many deliveries would you like ?"
+    },
+    {
+      "type": "text",
+      "id": "quantity_subtext",
+      "label": "Quantity Subtext",
+      "default": "Pay once and do not worry about flowers, our bouquets will be beautiful and on time, as many times as you need"
+    },
+    {
+      "type": "header",
+      "content": "Checkout"
+    },
+    {
+      "type": "text",
+      "id": "checkout_label",
+      "label": "Checkout Button Label",
+      "default": "Checkout"
+    },
+    {
+      "type": "header",
+      "content": "Side Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "side_image",
+      "label": "Side Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        { "value": "object-center", "label": "Center" },
+        { "value": "object-top", "label": "Top" },
+        { "value": "object-bottom", "label": "Bottom" },
+        { "value": "object-left", "label": "Left" },
+        { "value": "object-right", "label": "Right" },
+        { "value": "object-left-top", "label": "Left Top" },
+        { "value": "object-right-top", "label": "Right Top" },
+        { "value": "object-left-bottom", "label": "Left Bottom" },
+        { "value": "object-right-bottom", "label": "Right Bottom" }
+      ],
+      "default": "object-center"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Selecting a Plan",
+      "category": "Subscription"
+    }
+  ]
+}
+{% endschema %}
