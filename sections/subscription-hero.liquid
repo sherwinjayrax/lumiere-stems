@@ -75,7 +75,7 @@
       {%- if section.settings.button_label != blank -%}
         <div class="flex self-stretch lg:self-start">
           <a
-            href="{{ section.settings.button_url | default: '#' }}"
+            href="/pages/subscription/#subscription-plan"
             class="
               inline-flex items-center justify-center basis-full
               border border-black-primary
@@ -163,11 +163,6 @@
       "id": "button_label",
       "label": "Button Label",
       "default": "Explore Plans"
-    },
-    {
-      "type": "url",
-      "id": "button_url",
-      "label": "Button URL"
     }
   ],
   "blocks": [

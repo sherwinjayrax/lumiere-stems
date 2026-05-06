@@ -1,0 +1,155 @@
+{%- liquid
+  assign img_pos = section.settings.image_position | default: 'object-center'
+  assign img_alt = section.settings.service_image.alt | escape | default: section.settings.heading
+  assign img_class = 'w-full h-full object-cover ' | append: img_pos
+-%}
+
+<section class="bg-white border-t border-black-primary h-auto lg:h-screen">
+  <div class="flex flex-col lg:flex-row lg:h-screen">
+    {%- comment -%} ══ LEFT — Image ══ {%- endcomment -%}
+    <div
+      class="
+        w-full lg:w-1/2 lg:h-full overflow-hidden
+        border-b border-black-primary lg:border-r
+      "
+    >
+      {%- if section.settings.service_image != blank -%}
+        <div class="flex h-full">
+          {{
+            section.settings.service_image
+            | image_url: width: 1400
+            | image_tag:
+              alt: img_alt,
+              loading: 'lazy',
+              class: img_class,
+              widths: '400, 600, 800, 1000, 1200, 1400',
+              sizes: '(max-width: 1024px) 100vw, 50vw'
+          }}
+        </div>
+      {%- else -%}
+        <div class="flex bg-gray-100 items-center justify-center">
+          <span class="text-gray-400 text-sm">Upload an image</span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ══ RIGHT — Content ══ {%- endcomment -%}
+    <div
+      class="
+        w-full lg:w-1/2 lg:h-full
+        flex flex-col items-center justify-center text-center
+        px-4 py-10 md:px-16 md:p-20
+      "
+    >
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="text-xs md:text-sm poppins-medium text-black-primary uppercase mb-6">
+          {{ section.settings.eyebrow }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="text-[2.125rem] md:text-[3.125rem] poppins-semibold text-black-primary leading-tight mb-4 max-w-xl">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.desc_text != blank -%}
+        <p class="text-base text-black-secondary leading-relaxed max-w-md mb-16">
+          {{ section.settings.desc_text }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a
+          href="{{ section.settings.button_url | default: '#' }}"
+          class="
+            inline-flex items-center justify-center self-stretch md:self-center
+            border border-black-primary
+            text-sm md:text-base poppins-medium text-black-primary uppercase
+            px-12 py-4
+            hover:bg-black-primary hover:text-white
+            transition-colors duration-200
+          "
+        >
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Service Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "service_image",
+      "label": "Service Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        { "value": "object-center", "label": "Center" },
+        { "value": "object-top", "label": "Top" },
+        { "value": "object-bottom", "label": "Bottom" },
+        { "value": "object-left", "label": "Left" },
+        { "value": "object-right", "label": "Right" },
+        { "value": "object-left-top", "label": "Left Top" },
+        { "value": "object-right-top", "label": "Right Top" },
+        { "value": "object-left-bottom", "label": "Left Bottom" },
+        { "value": "object-right-bottom", "label": "Right Bottom" }
+      ],
+      "default": "object-center"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "Service"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Flower Subscriptions"
+    },
+    {
+      "type": "text",
+      "id": "desc_text",
+      "label": "Description",
+      "default": "Experience the convenience and savings of regular flower deliveries with our flexible subscription service - up to 30% more profitable than one-time purchases."
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Subscribe Now"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Service Section"
+    }
+  ]
+}
+{% endschema %}

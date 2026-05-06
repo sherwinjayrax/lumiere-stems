@@ -2,12 +2,16 @@
   This template renders the /collections page listing all collections.
   https://shopify.dev/docs/storefronts/themes/architecture/templates/list-collections
 {% endcomment %}
+{%- assign excluded_handles = 'fresh-flowers-plan,dried-flowers-plan,live-plants-plan' | split: ',' -%}
 
 <section class="bg-white h-auto md:h-screen flex flex-col">
   {%- comment -%} ══ GRID ══ {%- endcomment -%}
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-x divide-black-primary h-full">
     {%- for collection in collections -%}
-      {%- comment -%} Skip empty collections if needed {%- endcomment -%}
+      {%- if excluded_handles contains collection.handle -%}
+        {%- continue -%}
+      {%- endif -%}
+
       <a
         href="{{ collection.url }}"
         class="
